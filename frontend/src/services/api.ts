@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Fighter, WeightClass, Ranking, FighterDetail, UpcomingFight, Comparison } from '../types'
+import { Fighter, WeightClass, Ranking, FighterDetail, UpcomingFight, Comparison, Event, Fight, FightStats, FighterStatsSummary } from '../types'
 
 const API_BASE_URL = '/api'
 
@@ -34,8 +34,9 @@ export const api = {
   },
 
   // Рейтинги
-  getRankings: async (classId: number): Promise<Ranking[]> => {
-    const response = await apiClient.get(`/rankings/${classId}`)
+  getRankings: async (classId?: number): Promise<Ranking[]> => {
+    const url = classId ? `/rankings/${classId}` : '/rankings'
+    const response = await apiClient.get(url)
     return response.data
   },
 
@@ -62,6 +63,61 @@ export const api = {
   // Статистика
   getStats: async () => {
     const response = await apiClient.get('/stats')
+    return response.data
+  },
+
+  // События
+  getEvents: async (params?: {
+    skip?: number
+    limit?: number
+    upcoming_only?: boolean
+  }): Promise<Event[]> => {
+    const response = await apiClient.get('/events', { params })
+    return response.data
+  },
+
+  getEvent: async (id: number): Promise<Event> => {
+    const response = await apiClient.get(`/events/${id}`)
+    return response.data
+  },
+
+  // Бои
+  getFights: async (params?: {
+    skip?: number
+    limit?: number
+    fighter_id?: number
+    weight_class_id?: number
+  }): Promise<Fight[]> => {
+    const response = await apiClient.get('/fights', { params })
+    return response.data
+  },
+
+  getFight: async (id: number): Promise<Fight> => {
+    const response = await apiClient.get(`/fights/${id}`)
+    return response.data
+  },
+
+  getFightStats: async (fightId: number): Promise<FightStats[]> => {
+    const response = await apiClient.get(`/fights/${fightId}/stats`)
+    return response.data
+  },
+
+  // Статистика бойцов
+  getFighterStats: async (fighterId: number): Promise<FighterStatsSummary> => {
+    const response = await apiClient.get(`/fighters/${fighterId}/stats`)
+    return response.data
+  },
+
+  getFighterFights: async (fighterId: number, limit?: number): Promise<Fight[]> => {
+    const response = await apiClient.get(`/fighters/${fighterId}/fights`, { 
+      params: { limit } 
+    })
+    return response.data
+  },
+
+  // Обновление данных ufc.stats
+  refreshUFCStats: async () => {
+    const response = await apiClient.post('/refresh-ufc-stats')
     return response.data
   },
 }

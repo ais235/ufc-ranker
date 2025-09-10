@@ -2,34 +2,32 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  * {
-    @apply border-gray-300;
-  }
-  
-  body {
-    @apply bg-gray-50 text-gray-900;
-  }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-@layer components {
-  .btn {
-    @apply inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ufc-blue focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none;
-  }
-  
-  .btn-primary {
-    @apply bg-ufc-blue text-white hover:bg-ufc-blue/90 h-10 py-2 px-4;
-  }
-  
-  .btn-secondary {
-    @apply bg-gray-200 text-gray-900 hover:bg-gray-300 h-10 py-2 px-4;
-  }
-  
-  .card {
-    @apply rounded-lg border bg-white shadow-sm;
-  }
-  
-  .input {
-    @apply flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ufc-blue focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
-  }
+/* UFC цвета */
+.bg-ufc-dark {
+  background-color: #202733;
+}
+
+.text-ufc-gold {
+  color: #d4af37;
+}
+
+.bg-ufc-gold {
+  background-color: #d4af37;
+}
+
+.text-ufc-blue {
+  color: #2f49d1;
+}
+
+.bg-ufc-blue {
+  background-color: #2f49d1;
 }

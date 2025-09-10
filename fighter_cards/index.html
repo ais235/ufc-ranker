@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Карточки бойцов UFC</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .fighter-card {
+            background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .fighter-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <!-- Header -->
+    <header class="gradient-bg text-white py-6">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between">
+                <h1 class="text-3xl font-bold">UFC Ranker - Карточки бойцов</h1>
+                <nav class="space-x-6">
+                    <a href="#" class="hover:text-blue-200 transition-colors">Главная</a>
+                    <a href="#" class="hover:text-blue-200 transition-colors">Бойцы</a>
+                    <a href="#" class="hover:text-blue-200 transition-colors">Рейтинги</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Выберите бойца для просмотра карточки:</h2>
+            <p class="text-gray-600">Нажмите на карточку бойца, чтобы открыть подробную информацию</p>
+        </div>
+
+        <!-- Fighter Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Ислам Махачев -->
+            <div class="fighter-card rounded-xl p-6 cursor-pointer" onclick="window.open('Ислам_Махачев_card.html', '_blank')">
+                <div class="text-center">
+                    <div class="w-24 h-24 mx-auto bg-gradient-to-br from-gray-200 to-gray-300 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-user text-3xl text-gray-500"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Ислам Махачев</h3>
+                    <p class="text-gray-600 mb-2">"The Eagle"</p>
+                    <div class="flex justify-center space-x-4 text-sm">
+                        <span class="bg-green-100 text-green-800 px-2 py-1 rounded">17-0-0</span>
+                        <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded">Легкий вес</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Александр Волкановски -->
+            <div class="fighter-card rounded-xl p-6 cursor-pointer" onclick="window.open('Александр_Волкановски_card.html', '_blank')">
+                <div class="text-center">
+                    <div class="w-24 h-24 mx-auto bg-gradient-to-br from-gray-200 to-gray-300 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-user text-3xl text-gray-500"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Александр Волкановски</h3>
+                    <p class="text-gray-600 mb-2">"The Great"</p>
+                    <div class="flex justify-center space-x-4 text-sm">
+                        <span class="bg-green-100 text-green-800 px-2 py-1 rounded">17-0-0</span>
+                        <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded">Полулегкий вес</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Макс Холловэй -->
+            <div class="fighter-card rounded-xl p-6 cursor-pointer" onclick="window.open('Макс_Холловэй_card.html', '_blank')">
+                <div class="text-center">
+                    <div class="w-24 h-24 mx-auto bg-gradient-to-br from-gray-200 to-gray-300 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-user text-3xl text-gray-500"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Макс Холловэй</h3>
+                    <p class="text-gray-600 mb-2">"Blessed"</p>
+                    <div class="flex justify-center space-x-4 text-sm">
+                        <span class="bg-green-100 text-green-800 px-2 py-1 rounded">17-0-0</span>
+                        <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded">Полулегкий вес</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Джон Джонс -->
+            <div class="fighter-card rounded-xl p-6 cursor-pointer" onclick="window.open('Джон_Джонс_card.html', '_blank')">
+                <div class="text-center">
+                    <div class="w-24 h-24 mx-auto bg-gradient-to-br from-gray-200 to-gray-300 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-user text-3xl text-gray-500"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Джон Джонс</h3>
+                    <p class="text-gray-600 mb-2">"Bones"</p>
+                    <div class="flex justify-center space-x-4 text-sm">
+                        <span class="bg-green-100 text-green-800 px-2 py-1 rounded">17-0-0</span>
+                        <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded">Полутяжёлый вес</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Фрэнсис Нганну -->
+            <div class="fighter-card rounded-xl p-6 cursor-pointer" onclick="window.open('Фрэнсис_Нганну_card.html', '_blank')">
+                <div class="text-center">
+                    <div class="w-24 h-24 mx-auto bg-gradient-to-br from-gray-200 to-gray-300 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-user text-3xl text-gray-500"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Фрэнсис Нганну</h3>
+                    <p class="text-gray-600 mb-2">"The Predator"</p>
+                    <div class="flex justify-center space-x-4 text-sm">
+                        <span class="bg-green-100 text-green-800 px-2 py-1 rounded">17-0-0</span>
+                        <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded">Тяжелый вес</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Добавить нового бойца -->
+            <div class="fighter-card rounded-xl p-6 cursor-pointer border-2 border-dashed border-gray-300 hover:border-blue-400 transition-colors" onclick="alert('Функция добавления бойца будет реализована позже')">
+                <div class="text-center">
+                    <div class="w-24 h-24 mx-auto bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-plus text-3xl text-gray-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-600 mb-2">Добавить бойца</h3>
+                    <p class="text-gray-500">Создать новую карточку</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics -->
+        <div class="mt-12 bg-white rounded-xl p-6 shadow-lg">
+            <h3 class="text-2xl font-bold text-gray-800 mb-6">Статистика</h3>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-blue-600">5</div>
+                    <div class="text-gray-600">Бойцов</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-green-600">85</div>
+                    <div class="text-gray-600">Побед</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-red-600">0</div>
+                    <div class="text-gray-600">Поражений</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-yellow-600">0</div>
+                    <div class="text-gray-600">Ничьих</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; 2024 UFC Ranker. Все права защищены.</p>
+        </div>
+    </footer>
+</body>
+</html>

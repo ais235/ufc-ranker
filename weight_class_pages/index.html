@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Весовые категории UFC</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .weight-class-card {
+            background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .weight-class-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .weight-class-header {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <!-- Header -->
+    <header class="gradient-bg text-white py-6">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between">
+                <h1 class="text-3xl font-bold">UFC Ranker - Весовые категории</h1>
+                <nav class="space-x-6">
+                    <a href="#" class="hover:text-blue-200 transition-colors">Главная</a>
+                    <a href="#" class="hover:text-blue-200 transition-colors">Бойцы</a>
+                    <a href="#" class="hover:text-blue-200 transition-colors">Рейтинги</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <div class="mb-8">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">Выберите весовую категорию:</h2>
+            <p class="text-gray-600">Нажмите на карточку весовой категории, чтобы посмотреть рейтинг бойцов</p>
+        </div>
+
+        <!-- Weight Classes Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Легкий вес -->
+            <div class="weight-class-card rounded-2xl p-8 cursor-pointer" onclick="window.open('Легкий_вес_page.html', '_blank')">
+                <div class="text-center">
+                    <div class="w-24 h-24 mx-auto bg-gradient-to-br from-blue-200 to-blue-300 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-weight text-4xl text-blue-600"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">Легкий вес</h3>
+                    <p class="text-gray-600 mb-4">Lightweight</p>
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">Вес:</span>
+                            <span class="font-semibold">155 lbs (70.3 кг)</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">Бойцов:</span>
+                            <span class="font-semibold">15</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">Чемпион:</span>
+                            <span class="font-semibold">Илия Топурия</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Полулегкий вес -->
+            <div class="weight-class-card rounded-2xl p-8 cursor-pointer" onclick="window.open('Полулегкий_вес_page.html', '_blank')">
+                <div class="text-center">
+                    <div class="w-24 h-24 mx-auto bg-gradient-to-br from-green-200 to-green-300 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-weight text-4xl text-green-600"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">Полулегкий вес</h3>
+                    <p class="text-gray-600 mb-4">Featherweight</p>
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">Вес:</span>
+                            <span class="font-semibold">145 lbs (65.8 кг)</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">Бойцов:</span>
+                            <span class="font-semibold">12</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">Чемпион:</span>
+                            <span class="font-semibold">Александр Волкановски</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Тяжелый вес -->
+            <div class="weight-class-card rounded-2xl p-8 cursor-pointer" onclick="window.open('Тяжелый_вес_page.html', '_blank')">
+                <div class="text-center">
+                    <div class="w-24 h-24 mx-auto bg-gradient-to-br from-red-200 to-red-300 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-weight text-4xl text-red-600"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">Тяжелый вес</h3>
+                    <p class="text-gray-600 mb-4">Heavyweight</p>
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">Вес:</span>
+                            <span class="font-semibold">265 lbs (120.2 кг)</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">Бойцов:</span>
+                            <span class="font-semibold">8</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">Чемпион:</span>
+                            <span class="font-semibold">Джон Джонс</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Полусредний вес -->
+            <div class="weight-class-card rounded-2xl p-8 cursor-pointer" onclick="window.open('Полусредний_вес_page.html', '_blank')">
+                <div class="text-center">
+                    <div class="w-24 h-24 mx-auto bg-gradient-to-br from-purple-200 to-purple-300 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-weight text-4xl text-purple-600"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">Полусредний вес</h3>
+                    <p class="text-gray-600 mb-4">Welterweight</p>
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">Вес:</span>
+                            <span class="font-semibold">170 lbs (77.1 кг)</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">Бойцов:</span>
+                            <span class="font-semibold">18</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">Чемпион:</span>
+                            <span class="font-semibold">Леон Эдвардс</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Средний вес -->
+            <div class="weight-class-card rounded-2xl p-8 cursor-pointer" onclick="alert('Страница в разработке')">
+                <div class="text-center">
+                    <div class="w-24 h-24 mx-auto bg-gradient-to-br from-yellow-200 to-yellow-300 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-weight text-4xl text-yellow-600"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">Средний вес</h3>
+                    <p class="text-gray-600 mb-4">Middleweight</p>
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">Вес:</span>
+                            <span class="font-semibold">185 lbs (83.9 кг)</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">Бойцов:</span>
+                            <span class="font-semibold">14</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">Чемпион:</span>
+                            <span class="font-semibold">Дрикус Дю Плесси</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Полутяжёлый вес -->
+            <div class="weight-class-card rounded-2xl p-8 cursor-pointer" onclick="alert('Страница в разработке')">
+                <div class="text-center">
+                    <div class="w-24 h-24 mx-auto bg-gradient-to-br from-indigo-200 to-indigo-300 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-weight text-4xl text-indigo-600"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">Полутяжёлый вес</h3>
+                    <p class="text-gray-600 mb-4">Light Heavyweight</p>
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">Вес:</span>
+                            <span class="font-semibold">205 lbs (93.0 кг)</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">Бойцов:</span>
+                            <span class="font-semibold">10</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">Чемпион:</span>
+                            <span class="font-semibold">Алекс Перейра</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics -->
+        <div class="mt-12 bg-white rounded-2xl p-8 shadow-lg">
+            <h3 class="text-2xl font-bold text-gray-800 mb-6">Общая статистика</h3>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-blue-600 mb-2">6</div>
+                    <div class="text-gray-600">Весовых категорий</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-green-600 mb-2">77</div>
+                    <div class="text-gray-600">Бойцов в рейтингах</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-yellow-600 mb-2">6</div>
+                    <div class="text-gray-600">Чемпионов</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-purple-600 mb-2">155-265</div>
+                    <div class="text-gray-600">Диапазон весов (lbs)</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; 2024 UFC Ranker. Все права защищены.</p>
+        </div>
+    </footer>
+</body>
+</html>

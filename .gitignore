@@ -61,4 +61,4 @@ frontend/.env.production.local
 
 # Database
 database/migrations/versions/
-database/*.db
+database/*.dbtemp_ufc_stats/

@@ -1,0 +1,429 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UFC - Полулегкий вес</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .champion-gradient {
+            background: linear-gradient(135deg, #d4af37 0%, #ffd700 50%, #ffed4e 100%);
+        }
+        .fighter-card {
+            background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .fighter-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .champion-card {
+            background: linear-gradient(145deg, #ffffff 0%, #fefce8 100%);
+            box-shadow: 0 20px 25px -5px rgba(212, 175, 55, 0.3);
+            border: 2px solid #fbbf24;
+        }
+        .rank-badge {
+            background: linear-gradient(45deg, #3b82f6, #1d4ed8);
+            color: white;
+            font-weight: bold;
+        }
+        .champion-badge {
+            background: linear-gradient(45deg, #d4af37, #ffd700);
+            color: #1f2937;
+            font-weight: bold;
+        }
+        .flag-gradient {
+            background: linear-gradient(45deg, #1e40af, #3b82f6, #60a5fa);
+        }
+        .weight-class-header {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <!-- Header -->
+    <header class="gradient-bg text-white py-6">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between">
+                <h1 class="text-3xl font-bold">UFC Ranker</h1>
+                <nav class="space-x-6">
+                    <a href="#" class="hover:text-blue-200 transition-colors">Главная</a>
+                    <a href="#" class="hover:text-blue-200 transition-colors">Бойцы</a>
+                    <a href="#" class="hover:text-blue-200 transition-colors">Рейтинги</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Weight Class Header -->
+        <div class="weight-class-header text-white rounded-2xl p-8 mb-8">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-4xl font-bold mb-2">Полулегкий вес</h2>
+                    <p class="text-xl opacity-90 mb-4">Featherweight</p>
+                    <div class="flex items-center space-x-4">
+                        <span class="bg-white bg-opacity-20 px-4 py-2 rounded-full text-sm font-semibold">
+                            <i class="fas fa-weight mr-2"></i>None-None lbs
+                        </span>
+                        <span class="bg-white bg-opacity-20 px-4 py-2 rounded-full text-sm font-semibold">
+                            <i class="fas fa-users mr-2"></i>12 бойцов
+                        </span>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <div class="text-6xl opacity-20">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Champion Section -->
+        <div class="champion-card rounded-3xl p-8 mb-8">
+            <div class="flex items-center justify-center mb-6">
+                <div class="champion-badge px-6 py-3 rounded-full text-xl">
+                    <i class="fas fa-crown mr-2"></i>ЧЕМПИОН
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Champion Photo -->
+                <div class="lg:col-span-1">
+                    <div class="relative">
+                        <div class="w-80 h-80 mx-auto bg-gradient-to-br from-yellow-200 to-yellow-300 rounded-2xl flex items-center justify-center">
+                            <i class="fas fa-user text-6xl text-yellow-600"></i>
+                        </div>
+                        <div class="absolute -bottom-4 -right-4 w-20 h-20 champion-gradient rounded-full flex items-center justify-center">
+                            <i class="fas fa-crown text-3xl text-gray-800"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Champion Info -->
+                <div class="lg:col-span-2">
+                    <div class="text-center lg:text-left">
+                        <h3 class="text-4xl font-bold text-gray-900 mb-2">Александр Волкановски</h3>
+                        <p class="text-2xl text-gray-600 mb-4">Alexander Volkanovski</p>
+                        <p class="text-xl text-gray-500 mb-6">"The Great"</p>
+
+                        <!-- Champion Stats -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-white p-6 rounded-xl shadow-lg">
+                                <div class="flex items-center space-x-3 mb-4">
+                                    <i class="fas fa-trophy text-2xl text-yellow-600"></i>
+                                    <h4 class="text-xl font-semibold text-gray-800">Рекорд</h4>
+                                </div>
+                                <p class="text-3xl font-bold text-gray-900">26-3-0</p>
+                                <p class="text-gray-600">Непобежденный</p>
+                            </div>
+
+                            <div class="bg-white p-6 rounded-xl shadow-lg">
+                                <div class="flex items-center space-x-3 mb-4">
+                                    <i class="fas fa-ruler-vertical text-2xl text-blue-600"></i>
+                                    <h4 class="text-xl font-semibold text-gray-800">Рост</h4>
+                                </div>
+                                <p class="text-3xl font-bold text-gray-900">6'0"</p>
+                                <p class="text-gray-600">182 см</p>
+                            </div>
+
+                            <div class="bg-white p-6 rounded-xl shadow-lg">
+                                <div class="flex items-center space-x-3 mb-4">
+                                    <i class="fas fa-birthday-cake text-2xl text-green-600"></i>
+                                    <h4 class="text-xl font-semibold text-gray-800">Возраст</h4>
+                                </div>
+                                <p class="text-3xl font-bold text-gray-900">31</p>
+                                <p class="text-gray-600">лет</p>
+                            </div>
+
+                            <div class="bg-white p-6 rounded-xl shadow-lg">
+                                <div class="flex items-center space-x-3 mb-4">
+                                    <i class="fas fa-expand-arrows-alt text-2xl text-purple-600"></i>
+                                    <h4 class="text-xl font-semibold text-gray-800">Размах рук</h4>
+                                </div>
+                                <p class="text-3xl font-bold text-gray-900">73"</p>
+                                <p class="text-gray-600">см</p>
+                            </div>
+                        </div>
+
+                        <!-- Country -->
+                        <div class="flex items-center justify-center lg:justify-start mt-6">
+                            <div class="flag-gradient w-8 h-6 rounded flex items-center justify-center">
+                                <span class="text-white text-sm font-bold">AU</span>
+                            </div>
+                            <span class="text-lg font-semibold text-gray-700 ml-3">Австралия</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rankings Section -->
+        <div class="mb-8">
+            <h3 class="text-3xl font-bold text-gray-800 mb-6 flex items-center">
+                <i class="fas fa-list-ol text-blue-600 mr-3"></i>
+                Рейтинг весовой категории
+            </h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+
+                <!-- Fighter 2 -->
+                <div class="fighter-card rounded-xl p-6 cursor-pointer">
+                    <div class="text-center">
+                        <div class="relative mb-4">
+                            <div class="w-32 h-32 mx-auto bg-gradient-to-br from-gray-200 to-gray-300 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-user text-4xl text-gray-500"></i>
+                            </div>
+                            <div class="absolute -top-2 -right-2 w-8 h-8 rank-badge rounded-full flex items-center justify-center text-sm">
+                                2
+                            </div>
+                        </div>
+                        <h4 class="text-lg font-bold text-gray-800 mb-1">Александр Волкановски</h4>
+                        <p class="text-gray-600 mb-3">Alexander Volkanovski</p>
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-500">Рекорд:</span>
+                                <span class="font-semibold">26-3-0</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-500">Рост:</span>
+                                <span class="font-semibold">6'0"</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-500">Страна:</span>
+                                <span class="font-semibold">Австралия</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fighter 3 -->
+                <div class="fighter-card rounded-xl p-6 cursor-pointer">
+                    <div class="text-center">
+                        <div class="relative mb-4">
+                            <div class="w-32 h-32 mx-auto bg-gradient-to-br from-gray-200 to-gray-300 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-user text-4xl text-gray-500"></i>
+                            </div>
+                            <div class="absolute -top-2 -right-2 w-8 h-8 rank-badge rounded-full flex items-center justify-center text-sm">
+                                3
+                            </div>
+                        </div>
+                        <h4 class="text-lg font-bold text-gray-800 mb-1">Макс Холловэй</h4>
+                        <p class="text-gray-600 mb-3">Max Holloway</p>
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-500">Рекорд:</span>
+                                <span class="font-semibold">25-7-0</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-500">Рост:</span>
+                                <span class="font-semibold">6'2"</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-500">Страна:</span>
+                                <span class="font-semibold">США</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fighter 4 -->
+                <div class="fighter-card rounded-xl p-6 cursor-pointer">
+                    <div class="text-center">
+                        <div class="relative mb-4">
+                            <div class="w-32 h-32 mx-auto bg-gradient-to-br from-gray-200 to-gray-300 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-user text-4xl text-gray-500"></i>
+                            </div>
+                            <div class="absolute -top-2 -right-2 w-8 h-8 rank-badge rounded-full flex items-center justify-center text-sm">
+                                4
+                            </div>
+                        </div>
+                        <h4 class="text-lg font-bold text-gray-800 mb-1">Макс Холловэй</h4>
+                        <p class="text-gray-600 mb-3">Max Holloway</p>
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-500">Рекорд:</span>
+                                <span class="font-semibold">25-7-0</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-500">Рост:</span>
+                                <span class="font-semibold">5'11"</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-500">Страна:</span>
+                                <span class="font-semibold">США</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fighter 5 -->
+                <div class="fighter-card rounded-xl p-6 cursor-pointer">
+                    <div class="text-center">
+                        <div class="relative mb-4">
+                            <div class="w-32 h-32 mx-auto bg-gradient-to-br from-gray-200 to-gray-300 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-user text-4xl text-gray-500"></i>
+                            </div>
+                            <div class="absolute -top-2 -right-2 w-8 h-8 rank-badge rounded-full flex items-center justify-center text-sm">
+                                5
+                            </div>
+                        </div>
+                        <h4 class="text-lg font-bold text-gray-800 mb-1">Кэлвин Каттар</h4>
+                        <p class="text-gray-600 mb-3">Calvin Kattar</p>
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-500">Рекорд:</span>
+                                <span class="font-semibold">23-7-0</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-500">Рост:</span>
+                                <span class="font-semibold">6'3"</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-500">Страна:</span>
+                                <span class="font-semibold">США</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fighter 6 -->
+                <div class="fighter-card rounded-xl p-6 cursor-pointer">
+                    <div class="text-center">
+                        <div class="relative mb-4">
+                            <div class="w-32 h-32 mx-auto bg-gradient-to-br from-gray-200 to-gray-300 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-user text-4xl text-gray-500"></i>
+                            </div>
+                            <div class="absolute -top-2 -right-2 w-8 h-8 rank-badge rounded-full flex items-center justify-center text-sm">
+                                6
+                            </div>
+                        </div>
+                        <h4 class="text-lg font-bold text-gray-800 mb-1">Арнольд Аллен</h4>
+                        <p class="text-gray-600 mb-3">Arnold Allen</p>
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-500">Рекорд:</span>
+                                <span class="font-semibold">19-2-0</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-500">Рост:</span>
+                                <span class="font-semibold">5'7"</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-500">Страна:</span>
+                                <span class="font-semibold">Великобритания</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fighter 7 -->
+                <div class="fighter-card rounded-xl p-6 cursor-pointer">
+                    <div class="text-center">
+                        <div class="relative mb-4">
+                            <div class="w-32 h-32 mx-auto bg-gradient-to-br from-gray-200 to-gray-300 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-user text-4xl text-gray-500"></i>
+                            </div>
+                            <div class="absolute -top-2 -right-2 w-8 h-8 rank-badge rounded-full flex items-center justify-center text-sm">
+                                7
+                            </div>
+                        </div>
+                        <h4 class="text-lg font-bold text-gray-800 mb-1">Джош Эмметт</h4>
+                        <p class="text-gray-600 mb-3">Josh Emmett</p>
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-500">Рекорд:</span>
+                                <span class="font-semibold">18-4-0</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-500">Рост:</span>
+                                <span class="font-semibold">6'1"</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-500">Страна:</span>
+                                <span class="font-semibold">США</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fighter 8 -->
+                <div class="fighter-card rounded-xl p-6 cursor-pointer">
+                    <div class="text-center">
+                        <div class="relative mb-4">
+                            <div class="w-32 h-32 mx-auto bg-gradient-to-br from-gray-200 to-gray-300 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-user text-4xl text-gray-500"></i>
+                            </div>
+                            <div class="absolute -top-2 -right-2 w-8 h-8 rank-badge rounded-full flex items-center justify-center text-sm">
+                                8
+                            </div>
+                        </div>
+                        <h4 class="text-lg font-bold text-gray-800 mb-1">Дэн Иге</h4>
+                        <p class="text-gray-600 mb-3">Dan Ige</p>
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-500">Рекорд:</span>
+                                <span class="font-semibold">17-7-0</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-500">Рост:</span>
+                                <span class="font-semibold">6'6"</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-500">Страна:</span>
+                                <span class="font-semibold">США</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Statistics Section -->
+        <div class="bg-white rounded-2xl p-8 shadow-lg">
+            <h3 class="text-2xl font-bold text-gray-800 mb-6">Статистика весовой категории</h3>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-blue-600 mb-2">12</div>
+                    <div class="text-gray-600">Бойцов в рейтинге</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-green-600 mb-2">237</div>
+                    <div class="text-gray-600">Общих побед</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-red-600 mb-2">50</div>
+                    <div class="text-gray-600">Общих поражений</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-yellow-600 mb-2">0</div>
+                    <div class="text-gray-600">Ничьих</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Back Button -->
+        <div class="text-center mt-8">
+            <a href="#" class="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i>
+                Назад к рейтингам
+            </a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; 2024 UFC Ranker. Все права защищены.</p>
+        </div>
+    </footer>
+</body>
+</html>

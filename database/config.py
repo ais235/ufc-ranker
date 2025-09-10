@@ -9,7 +9,7 @@ from sqlalchemy.orm import sessionmaker
 from .models import Base
 
 # Настройки БД
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./ufc_ranker.db")
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./ufc_ranker_v2.db")
 
 # Создаем движок БД
 engine = create_engine(

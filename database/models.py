@@ -47,6 +47,11 @@ class Fighter(Base):
     reach = Column(Integer)   # в см
     age = Column(Integer)
     birth_date = Column(Date)
+    weight_class = Column(String(100))  # Весовая категория (Женский легчайший вес, Полутяжёлый вес и т.д.)
+    win = Column(Integer, default=0)    # Количество побед
+    draw = Column(Integer, default=0)   # Количество ничьих
+    lose = Column(Integer, default=0)   # Количество поражений
+    career = Column(String(100))        # Бойцовская организация (UFC, Bellator и т.д.)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     
@@ -138,5 +143,108 @@ class Event(Base):
     description = Column(Text)
     image_url = Column(String(500))
     is_upcoming = Column(Boolean, default=True)
+    attendance = Column(Integer, nullable=True)  # Количество зрителей
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    # Связи
+    fights = relationship("Fight", back_populates="event")
+
+
+class Fight(Base):
+    """Бои UFC"""
+    __tablename__ = "fights"
+    
+    id = Column(Integer, primary_key=True)
+    event_id = Column(Integer, ForeignKey('events.id'), nullable=False)
+    fighter1_id = Column(Integer, ForeignKey('fighters.id'), nullable=False)
+    fighter2_id = Column(Integer, ForeignKey('fighters.id'), nullable=False)
+    weight_class_id = Column(Integer, ForeignKey('weight_classes.id'), nullable=False)
+    scheduled_rounds = Column(Integer, default=3)  # Запланированное количество раундов
+    result = Column(String(50))  # Результат боя (KO, TKO, Decision, etc.)
+    winner_id = Column(Integer, ForeignKey('fighters.id'))  # ID победителя
+    fight_date = Column(Date)
+    is_title_fight = Column(Boolean, default=False)
+    is_main_event = Column(Boolean, default=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    # Связи
+    event = relationship("Event", back_populates="fights")
+    fighter1 = relationship("Fighter", foreign_keys=[fighter1_id])
+    fighter2 = relationship("Fighter", foreign_keys=[fighter2_id])
+    winner = relationship("Fighter", foreign_keys=[winner_id])
+    weight_class = relationship("WeightClass")
+    fight_stats = relationship("FightStats", back_populates="fight")
+
+
+class FightStats(Base):
+    """Детальная статистика боев по раундам (как в ufc.stats)"""
+    __tablename__ = "fight_stats"
+    
+    id = Column(Integer, primary_key=True)
+    fight_id = Column(Integer, ForeignKey('fights.id'), nullable=False)
+    fighter_id = Column(Integer, ForeignKey('fighters.id'), nullable=False)
+    round_number = Column(Integer, nullable=False)  # Номер раунда
+    
+    # Основная статистика
+    knockdowns = Column(Integer, default=0)  # Нокдауны
+    significant_strikes_landed = Column(Integer, default=0)  # Значимые удары (попали)
+    significant_strikes_attempted = Column(Integer, default=0)  # Значимые удары (попытки)
+    significant_strikes_rate = Column(Float, default=0.0)  # Процент попаданий
+    
+    total_strikes_landed = Column(Integer, default=0)  # Все удары (попали)
+    total_strikes_attempted = Column(Integer, default=0)  # Все удары (попытки)
+    
+    # Тейкдауны
+    takedown_successful = Column(Integer, default=0)  # Успешные тейкдауны
+    takedown_attempted = Column(Integer, default=0)  # Попытки тейкдаунов
+    takedown_rate = Column(Float, default=0.0)  # Процент успешных тейкдаунов
+    
+    # Субмиссии и реверсалы
+    submission_attempt = Column(Integer, default=0)  # Попытки субмиссий
+    reversals = Column(Integer, default=0)  # Реверсалы
+    
+    # Удары по частям тела
+    head_landed = Column(Integer, default=0)  # Удары в голову (попали)
+    head_attempted = Column(Integer, default=0)  # Удары в голову (попытки)
+    body_landed = Column(Integer, default=0)  # Удары по корпусу (попали)
+    body_attempted = Column(Integer, default=0)  # Удары по корпусу (попытки)
+    leg_landed = Column(Integer, default=0)  # Лоу-кики (попали)
+    leg_attempted = Column(Integer, default=0)  # Лоу-кики (попытки)
+    
+    # Удары по дистанции
+    distance_landed = Column(Integer, default=0)  # Удары на дистанции (попали)
+    distance_attempted = Column(Integer, default=0)  # Удары на дистанции (попытки)
+    clinch_landed = Column(Integer, default=0)  # Удары в клинче (попали)
+    clinch_attempted = Column(Integer, default=0)  # Удары в клинче (попытки)
+    ground_landed = Column(Integer, default=0)  # Удары в партере (попали)
+    ground_attempted = Column(Integer, default=0)  # Удары в партере (попытки)
+    
+    # Результат и время
+    result = Column(String(50))  # Результат раунда/боя
+    last_round = Column(Boolean, default=False)  # Последний раунд боя
+    time = Column(String(10))  # Время в раунде (например, "4:32")
+    winner = Column(String(1))  # Победитель раунда (W/L)
+    
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    # Связи
+    fight = relationship("Fight", back_populates="fight_stats")
+    fighter = relationship("Fighter")
+    
+    # Вычисляемые поля
+    @property
+    def significant_strikes_rate_calculated(self):
+        """Вычисляет процент значимых ударов"""
+        if self.significant_strikes_attempted == 0:
+            return 0.0
+        return round((self.significant_strikes_landed / self.significant_strikes_attempted) * 100, 2)
+    
+    @property
+    def takedown_rate_calculated(self):
+        """Вычисляет процент успешных тейкдаунов"""
+        if self.takedown_attempted == 0:
+            return 0.0
+        return round((self.takedown_successful / self.takedown_attempted) * 100, 2)
