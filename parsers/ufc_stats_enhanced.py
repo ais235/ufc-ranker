@@ -9,8 +9,8 @@ import json
 from typing import Dict, List, Optional
 from datetime import datetime, date
 from .base_parser import BaseParser
-from database.models import Fighter, WeightClass, Event, Fight, FightStats
-from database.config import SessionLocal
+from database.models import Fighter, WeightClass, Event, Fight, FightStats, Ranking
+from database.local_config import SessionLocal
 
 
 class UFCStatsEnhanced(BaseParser):
@@ -343,10 +343,10 @@ class UFCStatsEnhanced(BaseParser):
         
         for _, row in df.iterrows():
             ranking = Ranking(
-                fighter_id=row.get('fighter_id', 0),
-                weight_class_id=row.get('weight_class_id', 0),
-                rank_position=row.get('rank_position', 0),
-                is_champion=row.get('is_champion', False)
+                fighter_id=int(row.get('fighter_id', 0)),
+                weight_class_id=int(row.get('weight_class_id', 0)),
+                rank_position=int(row.get('rank_position', 0)),
+                is_champion=bool(row.get('is_champion', False))
             )
             db.add(ranking)
     

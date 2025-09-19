@@ -16,7 +16,7 @@ from parsers.upcoming_cards import UpcomingCardsParser
 from parsers.ufc_official_api import UFCOfficialAPIParser
 from parsers.ufc_stats_enhanced import UFCStatsEnhanced
 from parsers.data_source_manager import DataSourceManager
-from database.config import init_database
+from database.local_config import init_database
 
 
 def run_all_parsers():

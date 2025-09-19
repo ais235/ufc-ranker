@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  # PostgreSQL база данных
+  postgres:
+    image: postgres:15-alpine
+    container_name: ufc_ranker_postgres_local
+    environment:
+      POSTGRES_DB: ufc_ranker
+      POSTGRES_USER: ufc_ranker
+      POSTGRES_PASSWORD: ufc_ranker_password
+    volumes:
+      - postgres_data_local:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - ufc_ranker_local
+    restart: unless-stopped
+
+  # Redis для кэширования и Celery
+  redis:
+    image: redis:7-alpine
+    container_name: ufc_ranker_redis_local
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data_local:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - ufc_ranker_local
+    restart: unless-stopped
+
+  # Backend API (только для демонстрации)
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: ufc_ranker_backend_local
+    environment:
+      - DATABASE_URL=postgresql://ufc_ranker:ufc_ranker_password@postgres:5432/ufc_ranker
+      - REDIS_URL=redis://redis:6379/0
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+      - ENVIRONMENT=production
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - ufc_ranker_local
+    restart: unless-stopped
+
+volumes:
+  postgres_data_local:
+    driver: local
+  redis_data_local:
+    driver: local
+
+networks:
+  ufc_ranker_local:
+    driver: bridge
