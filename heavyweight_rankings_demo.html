@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Рейтинг тяжёлого веса UFC - UFC Ranker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e3a8a 0%, #7c3aed 100%);
+        }
+        .champion-card {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+        }
+        .rankings-card {
+            transition: all 0.3s ease;
+        }
+        .rankings-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .rank-number {
+            background: linear-gradient(135deg, #1e3a8a 0%, #7c3aed 100%);
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Header -->
+    <header class="bg-white shadow-lg">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex items-center justify-between">
+                <h1 class="text-3xl font-bold text-gray-900">
+                    🥊 UFC Ranker
+                </h1>
+                <nav class="space-x-4">
+                    <a href="main_page_demo.html" class="px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-100">🏠 Главная</a>
+                    <a href="#" class="px-4 py-2 rounded-lg bg-blue-600 text-white">🥊 Рейтинги</a>
+                    <a href="fighters_list_demo.html" class="px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-100">👊 Бойцы</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-4 py-8">
+        <!-- Заголовок рейтинга -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-gray-900 mb-2">
+                🏆 Рейтинг тяжёлого веса UFC
+            </h1>
+            <p class="text-xl text-gray-600">Топ-15 бойцов в весовой категории 93-120 кг</p>
+        </div>
+
+        <!-- Чемпион -->
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden mb-8">
+            <div class="champion-card p-6">
+                <div class="flex items-center justify-center mb-4">
+                    <div class="text-6xl mr-4">👑</div>
+                    <div class="text-center">
+                        <h2 class="text-3xl font-bold text-white mb-2">ЧЕМПИОН</h2>
+                        <p class="text-white text-lg">UFC Heavyweight Champion</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="md:flex">
+                <!-- Фото чемпиона -->
+                <div class="md:w-1/3">
+                    <div class="h-96 md:h-full champion-card flex items-center justify-center">
+                        <img
+                            src="https://via.placeholder.com/400x500/1E3A8A/FFFFFF?text=Том+Аспиналл"
+                            alt="Том Аспиналл"
+                            class="w-full h-full object-cover"
+                        />
+                    </div>
+                </div>
+
+                <!-- Информация о чемпионе -->
+                <div class="md:w-2/3 p-8">
+                    <div class="flex items-start justify-between mb-6">
+                        <div>
+                            <h1 class="text-4xl font-bold text-gray-900 mb-2">
+                                Том Аспиналл
+                            </h1>
+                            <p class="text-xl text-gray-600 mb-2">Tom Aspinall</p>
+                            <p class="text-lg text-blue-600 font-semibold">"The Grim Reaper"</p>
+                        </div>
+                        
+                        <img
+                            src="https://flagcdn.com/w40/gb.png"
+                            alt="Великобритания"
+                            class="w-12 h-8 object-cover rounded"
+                        />
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-900 mb-3">Основная информация</h3>
+                            <div class="space-y-2">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Страна:</span>
+                                    <span class="font-medium">Великобритания</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Возраст:</span>
+                                    <span class="font-medium">31 год</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Рост:</span>
+                                    <span class="font-medium">196 см</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Вес:</span>
+                                    <span class="font-medium">120 кг</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Размах рук:</span>
+                                    <span class="font-medium">203 см</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Категория:</span>
+                                    <span class="font-medium text-blue-600">Тяжёлый вес</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-900 mb-3">Боевой рекорд</h3>
+                            <div class="space-y-2">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Победы:</span>
+                                    <span class="font-bold text-green-600 text-xl">14</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Поражения:</span>
+                                    <span class="font-bold text-red-600 text-xl">3</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Ничьи:</span>
+                                    <span class="font-bold text-yellow-600 text-xl">0</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Всего боев:</span>
+                                    <span class="font-bold text-blue-600 text-xl">17</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">% побед:</span>
+                                    <span class="font-bold text-blue-600 text-xl">82.4%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Статус чемпиона -->
+                    <div class="bg-yellow-100 border-l-4 border-yellow-500 p-4 rounded">
+                        <div class="flex items-center">
+                            <div class="text-yellow-500 text-2xl mr-3">👑</div>
+                            <div>
+                                <p class="text-yellow-800 font-semibold">Чемпион UFC в тяжёлом весе</p>
+                                <p class="text-yellow-700 text-sm">#1 в рейтинге тяжёлого веса</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Рейтинг бойцов -->
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">📊 Рейтинг бойцов</h2>
+            
+            <!-- Ряды по 3 карточки -->
+            <div class="space-y-6">
+                <!-- Ряд 1: #1-3 -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- #1 Сергей Павлович -->
+                    <div class="rankings-card bg-white border border-gray-200 rounded-lg overflow-hidden">
+                        <div class="flex items-center justify-between p-4 bg-gray-50">
+                            <div class="flex items-center">
+                                <div class="rank-number text-white text-lg font-bold w-8 h-8 rounded-full flex items-center justify-center mr-3">1</div>
+                                <div>
+                                    <h3 class="font-bold text-lg text-gray-900">Сергей Павлович</h3>
+                                    <p class="text-sm text-gray-600">Sergei Pavlovich</p>
+                                </div>
+                            </div>
+                            <img src="https://flagcdn.com/w20/ru.png" alt="RU" class="w-6 h-4">
+                        </div>
+                        <!-- Фото бойца -->
+                        <div class="h-32 bg-gray-200 flex items-center justify-center relative">
+                            <img src="fighter.jpg" alt="Сергей Павлович" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="text-gray-400 text-4xl" style="display: none;">🥊</div>
+                            <button class="absolute top-2 right-2 bg-blue-600 text-white text-xs px-2 py-1 rounded hover:bg-blue-700 add-to-compare" data-fighter-id="1">
+                                + Сравнить
+                            </button>
+                        </div>
+                        <div class="p-4">
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Страна:</span>
+                                    <span class="font-medium">Россия</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Возраст:</span>
+                                    <span class="font-medium">32 года</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Рост:</span>
+                                    <span class="font-medium">191 см</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Размах рук:</span>
+                                    <span class="font-medium">213 см</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Рекорд:</span>
+                                    <span class="font-bold text-blue-600">18-2-0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- #2 Джон Джонс -->
+                    <div class="rankings-card bg-white border border-gray-200 rounded-lg overflow-hidden">
+                        <div class="flex items-center justify-between p-4 bg-gray-50">
+                            <div class="flex items-center">
+                                <div class="rank-number text-white text-lg font-bold w-8 h-8 rounded-full flex items-center justify-center mr-3">2</div>
+                                <div>
+                                    <h3 class="font-bold text-lg text-gray-900">Джон Джонс</h3>
+                                    <p class="text-sm text-gray-600">Jon Jones</p>
+                                </div>
+                            </div>
+                            <img src="https://flagcdn.com/w20/us.png" alt="US" class="w-6 h-4">
+                        </div>
+                        <!-- Фото бойца -->
+                        <div class="h-32 bg-gray-200 flex items-center justify-center relative">
+                            <img src="fighter.jpg" alt="Джон Джонс" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="text-gray-400 text-4xl" style="display: none;">🥊</div>
+                            <button class="absolute top-2 right-2 bg-blue-600 text-white text-xs px-2 py-1 rounded hover:bg-blue-700 add-to-compare" data-fighter-id="2">
+                                + Сравнить
+                            </button>
+                        </div>
+                        <div class="p-4">
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Страна:</span>
+                                    <span class="font-medium">США</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Возраст:</span>
+                                    <span class="font-medium">36 лет</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Рост:</span>
+                                    <span class="font-medium">193 см</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Размах рук:</span>
+                                    <span class="font-medium">215 см</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Рекорд:</span>
+                                    <span class="font-bold text-blue-600">27-1-0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- #3 Стипе Миочич -->
+                    <div class="rankings-card bg-white border border-gray-200 rounded-lg overflow-hidden">
+                        <div class="flex items-center justify-between p-4 bg-gray-50">
+                            <div class="flex items-center">
+                                <div class="rank-number text-white text-lg font-bold w-8 h-8 rounded-full flex items-center justify-center mr-3">3</div>
+                                <div>
+                                    <h3 class="font-bold text-lg text-gray-900">Стипе Миочич</h3>
+                                    <p class="text-sm text-gray-600">Stipe Miocic</p>
+                                </div>
+                            </div>
+                            <img src="https://flagcdn.com/w20/us.png" alt="US" class="w-6 h-4">
+                        </div>
+                        <!-- Фото бойца -->
+                        <div class="h-32 bg-gray-200 flex items-center justify-center relative">
+                            <img src="fighter.jpg" alt="Стипе Миочич" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="text-gray-400 text-4xl" style="display: none;">🥊</div>
+                            <button class="absolute top-2 right-2 bg-blue-600 text-white text-xs px-2 py-1 rounded hover:bg-blue-700 add-to-compare" data-fighter-id="3">
+                                + Сравнить
+                            </button>
+                        </div>
+                        <div class="p-4">
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Страна:</span>
+                                    <span class="font-medium">США</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Возраст:</span>
+                                    <span class="font-medium">41 год</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Рост:</span>
+                                    <span class="font-medium">188 см</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Размах рук:</span>
+                                    <span class="font-medium">203 см</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Рекорд:</span>
+                                    <span class="font-bold text-blue-600">20-4-0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ряд 2: #4-6 -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- #4 Дэниел Кормье -->
+                    <div class="rankings-card bg-white border border-gray-200 rounded-lg overflow-hidden">
+                        <div class="flex items-center justify-between p-4 bg-gray-50">
+                            <div class="flex items-center">
+                                <div class="rank-number text-white text-lg font-bold w-8 h-8 rounded-full flex items-center justify-center mr-3">4</div>
+                                <div>
+                                    <h3 class="font-bold text-lg text-gray-900">Дэниел Кормье</h3>
+                                    <p class="text-sm text-gray-600">Daniel Cormier</p>
+                                </div>
+                            </div>
+                            <img src="https://flagcdn.com/w20/us.png" alt="US" class="w-6 h-4">
+                        </div>
+                        <!-- Фото бойца -->
+                        <div class="h-32 bg-gray-200 flex items-center justify-center">
+                            <img src="fighter.jpg" alt="Дэниел Кормье" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="text-gray-400 text-4xl" style="display: none;">🥊</div>
+                        </div>
+                        <div class="p-4">
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Страна:</span>
+                                    <span class="font-medium">США</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Возраст:</span>
+                                    <span class="font-medium">45 лет</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Рост:</span>
+                                    <span class="font-medium">180 см</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Размах рук:</span>
+                                    <span class="font-medium">185 см</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Рекорд:</span>
+                                    <span class="font-bold text-blue-600">22-3-0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- #5 Фрэнсис Нганну -->
+                    <div class="rankings-card bg-white border border-gray-200 rounded-lg overflow-hidden">
+                        <div class="flex items-center justify-between p-4 bg-gray-50">
+                            <div class="flex items-center">
+                                <div class="rank-number text-white text-lg font-bold w-8 h-8 rounded-full flex items-center justify-center mr-3">5</div>
+                                <div>
+                                    <h3 class="font-bold text-lg text-gray-900">Фрэнсис Нганну</h3>
+                                    <p class="text-sm text-gray-600">Francis Ngannou</p>
+                                </div>
+                            </div>
+                            <img src="https://flagcdn.com/w20/cm.png" alt="CM" class="w-6 h-4">
+                        </div>
+                        <!-- Фото бойца -->
+                        <div class="h-32 bg-gray-200 flex items-center justify-center">
+                            <img src="fighter.jpg" alt="Фрэнсис Нганну" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="text-gray-400 text-4xl" style="display: none;">🥊</div>
+                        </div>
+                        <div class="p-4">
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Страна:</span>
+                                    <span class="font-medium">Камерун</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Возраст:</span>
+                                    <span class="font-medium">37 лет</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Рост:</span>
+                                    <span class="font-medium">193 см</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Размах рук:</span>
+                                    <span class="font-medium">211 см</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Рекорд:</span>
+                                    <span class="font-bold text-blue-600">17-3-0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- #6 Кёртис Блейдс -->
+                    <div class="rankings-card bg-white border border-gray-200 rounded-lg overflow-hidden">
+                        <div class="flex items-center justify-between p-4 bg-gray-50">
+                            <div class="flex items-center">
+                                <div class="rank-number text-white text-lg font-bold w-8 h-8 rounded-full flex items-center justify-center mr-3">6</div>
+                                <div>
+                                    <h3 class="font-bold text-lg text-gray-900">Кёртис Блейдс</h3>
+                                    <p class="text-sm text-gray-600">Curtis Blaydes</p>
+                                </div>
+                            </div>
+                            <img src="https://flagcdn.com/w20/us.png" alt="US" class="w-6 h-4">
+                        </div>
+                        <!-- Фото бойца -->
+                        <div class="h-32 bg-gray-200 flex items-center justify-center">
+                            <img src="fighter.jpg" alt="Кёртис Блейдс" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="text-gray-400 text-4xl" style="display: none;">🥊</div>
+                        </div>
+                        <div class="p-4">
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Страна:</span>
+                                    <span class="font-medium">США</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Возраст:</span>
+                                    <span class="font-medium">33 года</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Рост:</span>
+                                    <span class="font-medium">193 см</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Размах рук:</span>
+                                    <span class="font-medium">203 см</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Рекорд:</span>
+                                    <span class="font-bold text-blue-600">17-4-0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ряд 3: #7-9 -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- #7 Джаирзиньо Розенструйк -->
+                    <div class="rankings-card bg-white border border-gray-200 rounded-lg overflow-hidden">
+                        <div class="flex items-center justify-between p-4 bg-gray-50">
+                            <div class="flex items-center">
+                                <div class="rank-number text-white text-lg font-bold w-8 h-8 rounded-full flex items-center justify-center mr-3">7</div>
+                                <div>
+                                    <h3 class="font-bold text-lg text-gray-900">Джаирзиньо Розенструйк</h3>
+                                    <p class="text-sm text-gray-600">Jairzinho Rozenstruik</p>
+                                </div>
+                            </div>
+                            <img src="https://flagcdn.com/w20/sr.png" alt="SR" class="w-6 h-4">
+                        </div>
+                        <!-- Фото бойца -->
+                        <div class="h-32 bg-gray-200 flex items-center justify-center">
+                            <img src="fighter.jpg" alt="Джаирзиньо Розенструйк" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="text-gray-400 text-4xl" style="display: none;">🥊</div>
+                        </div>
+                        <div class="p-4">
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Страна:</span>
+                                    <span class="font-medium">Суринам</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Возраст:</span>
+                                    <span class="font-medium">35 лет</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Рост:</span>
+                                    <span class="font-medium">188 см</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Размах рук:</span>
+                                    <span class="font-medium">198 см</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Рекорд:</span>
+                                    <span class="font-bold text-blue-600">13-5-0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- #8 Александр Волков -->
+                    <div class="rankings-card bg-white border border-gray-200 rounded-lg overflow-hidden">
+                        <div class="flex items-center justify-between p-4 bg-gray-50">
+                            <div class="flex items-center">
+                                <div class="rank-number text-white text-lg font-bold w-8 h-8 rounded-full flex items-center justify-center mr-3">8</div>
+                                <div>
+                                    <h3 class="font-bold text-lg text-gray-900">Александр Волков</h3>
+                                    <p class="text-sm text-gray-600">Alexander Volkov</p>
+                                </div>
+                            </div>
+                            <img src="https://flagcdn.com/w20/ru.png" alt="RU" class="w-6 h-4">
+                        </div>
+                        <!-- Фото бойца -->
+                        <div class="h-32 bg-gray-200 flex items-center justify-center">
+                            <img src="fighter.jpg" alt="Александр Волков" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="text-gray-400 text-4xl" style="display: none;">🥊</div>
+                        </div>
+                        <div class="p-4">
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Страна:</span>
+                                    <span class="font-medium">Россия</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Возраст:</span>
+                                    <span class="font-medium">35 лет</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Рост:</span>
+                                    <span class="font-medium">201 см</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Размах рук:</span>
+                                    <span class="font-medium">203 см</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Рекорд:</span>
+                                    <span class="font-bold text-blue-600">36-10-0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- #9 Марчин Тыбура -->
+                    <div class="rankings-card bg-white border border-gray-200 rounded-lg overflow-hidden">
+                        <div class="flex items-center justify-between p-4 bg-gray-50">
+                            <div class="flex items-center">
+                                <div class="rank-number text-white text-lg font-bold w-8 h-8 rounded-full flex items-center justify-center mr-3">9</div>
+                                <div>
+                                    <h3 class="font-bold text-lg text-gray-900">Марчин Тыбура</h3>
+                                    <p class="text-sm text-gray-600">Marcin Tybura</p>
+                                </div>
+                            </div>
+                            <img src="https://flagcdn.com/w20/pl.png" alt="PL" class="w-6 h-4">
+                        </div>
+                        <!-- Фото бойца -->
+                        <div class="h-32 bg-gray-200 flex items-center justify-center">
+                            <img src="fighter.jpg" alt="Марчин Тыбура" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="text-gray-400 text-4xl" style="display: none;">🥊</div>
+                        </div>
+                        <div class="p-4">
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Страна:</span>
+                                    <span class="font-medium">Польша</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Возраст:</span>
+                                    <span class="font-medium">38 лет</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Рост:</span>
+                                    <span class="font-medium">191 см</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Размах рук:</span>
+                                    <span class="font-medium">198 см</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Рекорд:</span>
+                                    <span class="font-bold text-blue-600">24-7-0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ряд 4: #10-12 -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- #10 Деррик Льюис -->
+                    <div class="rankings-card bg-white border border-gray-200 rounded-lg overflow-hidden">
+                        <div class="flex items-center justify-between p-4 bg-gray-50">
+                            <div class="flex items-center">
+                                <div class="rank-number text-white text-lg font-bold w-8 h-8 rounded-full flex items-center justify-center mr-3">10</div>
+                                <div>
+                                    <h3 class="font-bold text-lg text-gray-900">Деррик Льюис</h3>
+                                    <p class="text-sm text-gray-600">Derrick Lewis</p>
+                                </div>
+                            </div>
+                            <img src="https://flagcdn.com/w20/us.png" alt="US" class="w-6 h-4">
+                        </div>
+                        <!-- Фото бойца -->
+                        <div class="h-32 bg-gray-200 flex items-center justify-center">
+                            <img src="fighter.jpg" alt="Деррик Льюис" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="text-gray-400 text-4xl" style="display: none;">🥊</div>
+                        </div>
+                        <div class="p-4">
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Страна:</span>
+                                    <span class="font-medium">США</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Возраст:</span>
+                                    <span class="font-medium">39 лет</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Рост:</span>
+                                    <span class="font-medium">191 см</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Размах рук:</span>
+                                    <span class="font-medium">201 см</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Рекорд:</span>
+                                    <span class="font-bold text-blue-600">27-11-0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- #11 Тай Туиваса -->
+                    <div class="rankings-card bg-white border border-gray-200 rounded-lg overflow-hidden">
+                        <div class="flex items-center justify-between p-4 bg-gray-50">
+                            <div class="flex items-center">
+                                <div class="rank-number text-white text-lg font-bold w-8 h-8 rounded-full flex items-center justify-center mr-3">11</div>
+                                <div>
+                                    <h3 class="font-bold text-lg text-gray-900">Тай Туиваса</h3>
+                                    <p class="text-sm text-gray-600">Tai Tuivasa</p>
+                                </div>
+                            </div>
+                            <img src="https://flagcdn.com/w20/au.png" alt="AU" class="w-6 h-4">
+                        </div>
+                        <!-- Фото бойца -->
+                        <div class="h-32 bg-gray-200 flex items-center justify-center">
+                            <img src="fighter.jpg" alt="Тай Туиваса" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="text-gray-400 text-4xl" style="display: none;">🥊</div>
+                        </div>
+                        <div class="p-4">
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Страна:</span>
+                                    <span class="font-medium">Австралия</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Возраст:</span>
+                                    <span class="font-medium">31 год</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Рост:</span>
+                                    <span class="font-medium">188 см</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Размах рук:</span>
+                                    <span class="font-medium">185 см</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Рекорд:</span>
+                                    <span class="font-bold text-blue-600">14-6-0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- #12 Шамиль Абдурахимов -->
+                    <div class="rankings-card bg-white border border-gray-200 rounded-lg overflow-hidden">
+                        <div class="flex items-center justify-between p-4 bg-gray-50">
+                            <div class="flex items-center">
+                                <div class="rank-number text-white text-lg font-bold w-8 h-8 rounded-full flex items-center justify-center mr-3">12</div>
+                                <div>
+                                    <h3 class="font-bold text-lg text-gray-900">Шамиль Абдурахимов</h3>
+                                    <p class="text-sm text-gray-600">Shamil Abdurakhimov</p>
+                                </div>
+                            </div>
+                            <img src="https://flagcdn.com/w20/ru.png" alt="RU" class="w-6 h-4">
+                        </div>
+                        <!-- Фото бойца -->
+                        <div class="h-32 bg-gray-200 flex items-center justify-center">
+                            <img src="fighter.jpg" alt="Шамиль Абдурахимов" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="text-gray-400 text-4xl" style="display: none;">🥊</div>
+                        </div>
+                        <div class="p-4">
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Страна:</span>
+                                    <span class="font-medium">Россия</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Возраст:</span>
+                                    <span class="font-medium">42 года</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Рост:</span>
+                                    <span class="font-medium">191 см</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Размах рук:</span>
+                                    <span class="font-medium">193 см</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Рекорд:</span>
+                                    <span class="font-bold text-blue-600">20-7-0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ряд 5: #13-15 -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- #13 Жуниор дос Сантос -->
+                    <div class="rankings-card bg-white border border-gray-200 rounded-lg overflow-hidden">
+                        <div class="flex items-center justify-between p-4 bg-gray-50">
+                            <div class="flex items-center">
+                                <div class="rank-number text-white text-lg font-bold w-8 h-8 rounded-full flex items-center justify-center mr-3">13</div>
+                                <div>
+                                    <h3 class="font-bold text-lg text-gray-900">Жуниор дос Сантос</h3>
+                                    <p class="text-sm text-gray-600">Junior dos Santos</p>
+                                </div>
+                            </div>
+                            <img src="https://flagcdn.com/w20/br.png" alt="BR" class="w-6 h-4">
+                        </div>
+                        <!-- Фото бойца -->
+                        <div class="h-32 bg-gray-200 flex items-center justify-center">
+                            <img src="fighter.jpg" alt="Жуниор дос Сантос" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="text-gray-400 text-4xl" style="display: none;">🥊</div>
+                        </div>
+                        <div class="p-4">
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Страна:</span>
+                                    <span class="font-medium">Бразилия</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Возраст:</span>
+                                    <span class="font-medium">40 лет</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Рост:</span>
+                                    <span class="font-medium">193 см</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Размах рук:</span>
+                                    <span class="font-medium">196 см</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Рекорд:</span>
+                                    <span class="font-bold text-blue-600">21-9-0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- #14 Фабрисио Вердум -->
+                    <div class="rankings-card bg-white border border-gray-200 rounded-lg overflow-hidden">
+                        <div class="flex items-center justify-between p-4 bg-gray-50">
+                            <div class="flex items-center">
+                                <div class="rank-number text-white text-lg font-bold w-8 h-8 rounded-full flex items-center justify-center mr-3">14</div>
+                                <div>
+                                    <h3 class="font-bold text-lg text-gray-900">Фабрисио Вердум</h3>
+                                    <p class="text-sm text-gray-600">Fabricio Werdum</p>
+                                </div>
+                            </div>
+                            <img src="https://flagcdn.com/w20/br.png" alt="BR" class="w-6 h-4">
+                        </div>
+                        <!-- Фото бойца -->
+                        <div class="h-32 bg-gray-200 flex items-center justify-center">
+                            <img src="fighter.jpg" alt="Фабрисио Вердум" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="text-gray-400 text-4xl" style="display: none;">🥊</div>
+                        </div>
+                        <div class="p-4">
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Страна:</span>
+                                    <span class="font-medium">Бразилия</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Возраст:</span>
+                                    <span class="font-medium">46 лет</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Рост:</span>
+                                    <span class="font-medium">193 см</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Размах рук:</span>
+                                    <span class="font-medium">201 см</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Рекорд:</span>
+                                    <span class="font-bold text-blue-600">24-9-1</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- #15 Брок Леснар -->
+                    <div class="rankings-card bg-white border border-gray-200 rounded-lg overflow-hidden">
+                        <div class="flex items-center justify-between p-4 bg-gray-50">
+                            <div class="flex items-center">
+                                <div class="rank-number text-white text-lg font-bold w-8 h-8 rounded-full flex items-center justify-center mr-3">15</div>
+                                <div>
+                                    <h3 class="font-bold text-lg text-gray-900">Брок Леснар</h3>
+                                    <p class="text-sm text-gray-600">Brock Lesnar</p>
+                                </div>
+                            </div>
+                            <img src="https://flagcdn.com/w20/us.png" alt="US" class="w-6 h-4">
+                        </div>
+                        <!-- Фото бойца -->
+                        <div class="h-32 bg-gray-200 flex items-center justify-center">
+                            <img src="fighter.jpg" alt="Брок Леснар" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="text-gray-400 text-4xl" style="display: none;">🥊</div>
+                        </div>
+                        <div class="p-4">
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Страна:</span>
+                                    <span class="font-medium">США</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Возраст:</span>
+                                    <span class="font-medium">47 лет</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Рост:</span>
+                                    <span class="font-medium">191 см</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Размах рук:</span>
+                                    <span class="font-medium">203 см</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Рекорд:</span>
+                                    <span class="font-bold text-blue-600">5-3-0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; 2024 UFC Ranker. Все права защищены.</p>
+            <p class="mt-2 text-sm text-gray-400">
+                Рейтинг тяжёлого веса UFC - Топ-15 бойцов
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Анимация при загрузке
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.rankings-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    card.style.transition = 'all 0.5s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+
+            // Функционал сравнения
+            initializeCompare();
+        });
+
+        function initializeCompare() {
+            // Обработчики для кнопок добавления в сравнение
+            document.querySelectorAll('.add-to-compare').forEach(button => {
+                button.addEventListener('click', function() {
+                    const fighterId = parseInt(this.dataset.fighterId);
+                    addToCompare(fighterId);
+                });
+            });
+        }
+
+        function addToCompare(fighterId) {
+            // Сохраняем в localStorage
+            let compareList = JSON.parse(localStorage.getItem('compareList') || '[]');
+            
+            if (compareList.length >= 2) {
+                alert('Можно сравнить максимум 2 бойцов');
+                return;
+            }
+
+            if (compareList.includes(fighterId)) {
+                alert('Боец уже добавлен в сравнение');
+                return;
+            }
+
+            compareList.push(fighterId);
+            localStorage.setItem('compareList', JSON.stringify(compareList));
+            
+            // Обновляем UI
+            updateCompareButtons();
+            showCompareNotification();
+        }
+
+        function updateCompareButtons() {
+            const compareList = JSON.parse(localStorage.getItem('compareList') || '[]');
+            
+            document.querySelectorAll('.add-to-compare').forEach(button => {
+                const fighterId = parseInt(button.dataset.fighterId);
+                if (compareList.includes(fighterId)) {
+                    button.textContent = '✓ В сравнении';
+                    button.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+                    button.classList.add('bg-green-600', 'hover:bg-green-700');
+                    button.disabled = true;
+                } else if (compareList.length >= 2) {
+                    button.textContent = '+ Сравнить';
+                    button.classList.remove('bg-green-600', 'hover:bg-green-700');
+                    button.classList.add('bg-gray-400', 'hover:bg-gray-400');
+                    button.disabled = true;
+                } else {
+                    button.textContent = '+ Сравнить';
+                    button.classList.remove('bg-green-600', 'hover:bg-green-700', 'bg-gray-400', 'hover:bg-gray-400');
+                    button.classList.add('bg-blue-600', 'hover:bg-blue-700');
+                    button.disabled = false;
+                }
+            });
+        }
+
+        function showCompareNotification() {
+            const compareList = JSON.parse(localStorage.getItem('compareList') || '[]');
+            
+            // Создаем уведомление
+            const notification = document.createElement('div');
+            notification.className = 'fixed top-20 right-4 bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg z-50';
+            notification.innerHTML = `
+                <div class="flex items-center">
+                    <span>${compareList.length} бойцов в сравнении</span>
+                    <a href="compare_fighters_demo.html" class="ml-2 bg-white text-blue-600 px-2 py-1 rounded text-sm hover:bg-gray-100">
+                        Сравнить
+                    </a>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Удаляем уведомление через 3 секунды
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Обновляем кнопки при загрузке страницы
+        updateCompareButtons();
+    </script>
+</body>
+</html>

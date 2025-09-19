@@ -222,3 +222,16 @@ class UFCRankingsParser(BaseParser):
         self.save_to_database(categories)
         
         return categories
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -84,3 +84,16 @@ const WeightClassTabs: React.FC<WeightClassTabsProps> = ({
 }
 
 export default WeightClassTabs
+
+
+
+
+
+
+
+
+
+
+
+
+

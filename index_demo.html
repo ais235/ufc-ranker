@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UFC Ranker - Главная</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e3a8a 0%, #7c3aed 100%);
+        }
+        .stats-card {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        }
+        .feature-card {
+            transition: all 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Header -->
+    <header class="bg-white shadow-lg">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex items-center justify-between">
+                <h1 class="text-3xl font-bold text-gray-900">
+                    🥊 UFC Ranker
+                </h1>
+                <nav class="space-x-4">
+                    <a href="main_page_demo.html" class="px-4 py-2 rounded-lg bg-blue-600 text-white">🏠 Главная</a>
+                    <a href="#" class="px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-100">🥊 Рейтинги</a>
+                    <a href="fighters_list_demo.html" class="px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-100">👊 Бойцы</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-4 py-8">
+        <!-- System Status -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Статус системы</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="flex items-center">
+                    <span class="text-lg">Бэкенд:</span>
+                    <span class="ml-2 text-lg text-green-600">✅ Работает</span>
+                </div>
+                <div class="flex items-center">
+                    <span class="text-lg">Фронтенд:</span>
+                    <span class="ml-2 text-lg text-green-600">✅ Работает</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Database Statistics -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Статистика базы данных</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-blue-600">17</div>
+                    <div class="text-gray-600">Бойцов</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-green-600">7</div>
+                    <div class="text-gray-600">Весовых категорий</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-purple-600">5</div>
+                    <div class="text-gray-600">Событий</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-orange-600">4</div>
+                    <div class="text-gray-600">Боев</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Test Data -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Тестовые данные</h2>
+            <div class="space-y-4">
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">Бойцы (первые 5):</h3>
+                    <div class="space-y-2">
+                        <div class="flex items-center space-x-4 p-3 bg-gray-50 rounded-lg">
+                            <div class="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">
+                                1
+                            </div>
+                            <div>
+                                <div class="font-medium">Ислам Махачев</div>
+                                <div class="text-sm text-gray-600">
+                                    Россия • 25-1-0 • Легкий вес
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-4 p-3 bg-gray-50 rounded-lg">
+                            <div class="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">
+                                2
+                            </div>
+                            <div>
+                                <div class="font-medium">Александр Волкановски</div>
+                                <div class="text-sm text-gray-600">
+                                    Австралия • 26-3-0 • Полулегкий вес
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-4 p-3 bg-gray-50 rounded-lg">
+                            <div class="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">
+                                3
+                            </div>
+                            <div>
+                                <div class="font-medium">Джон Джонс</div>
+                                <div class="text-sm text-gray-600">
+                                    США • 27-1-0 • Полутяжёлый вес
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-4 p-3 bg-gray-50 rounded-lg">
+                            <div class="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">
+                                4
+                            </div>
+                            <div>
+                                <div class="font-medium">Том Аспиналл</div>
+                                <div class="text-sm text-gray-600">
+                                    Великобритания • 14-3-0 • Тяжёлый вес
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-4 p-3 bg-gray-50 rounded-lg">
+                            <div class="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">
+                                5
+                            </div>
+                            <div>
+                                <div class="font-medium">Аманда Нунес</div>
+                                <div class="text-sm text-gray-600">
+                                    Бразилия • 22-5-0 • Женский легчайший вес
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="feature-card bg-white rounded-lg shadow-lg p-6">
+                <div class="text-4xl mb-4">🥊</div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Рейтинги</h3>
+                <p class="text-gray-600 mb-4">Актуальные рейтинги бойцов по весовым категориям</p>
+                <button class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">
+                    Посмотреть рейтинги
+                </button>
+            </div>
+
+            <div class="feature-card bg-white rounded-lg shadow-lg p-6">
+                <div class="text-4xl mb-4">👊</div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Бойцы</h3>
+                <p class="text-gray-600 mb-4">Подробная информация о каждом бойце UFC</p>
+                <a href="fighters_list_demo.html" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors block text-center">
+                    Посмотреть бойцов
+                </a>
+            </div>
+
+            <div class="feature-card bg-white rounded-lg shadow-lg p-6">
+                <div class="text-4xl mb-4">📊</div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Статистика</h3>
+                <p class="text-gray-600 mb-4">Детальная статистика боев и выступлений</p>
+                <button class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">
+                    Посмотреть статистику
+                </button>
+            </div>
+        </div>
+
+        <!-- Welcome Message -->
+        <div class="text-center gradient-bg text-white rounded-lg p-8">
+            <h2 class="text-3xl font-bold mb-4">Добро пожаловать в UFC Ranker!</h2>
+            <p class="text-xl mb-6">
+                Исследуйте рейтинги, статистику бойцов и события UFC
+            </p>
+            <div class="space-x-4">
+                <a href="#" class="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors inline-block">
+                    🥊 Рейтинги
+                </a>
+                <a href="fighters_list_demo.html" class="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors inline-block">
+                    👊 Бойцы
+                </a>
+            </div>
+        </div>
+
+        <!-- Demo Pages -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mt-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Демо страницы</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <h3 class="font-semibold text-gray-900 mb-2">Список бойцов</h3>
+                    <p class="text-gray-600 text-sm mb-3">Страница со списком всех бойцов с фильтрацией</p>
+                    <a href="fighters_list_demo.html" class="text-blue-600 hover:text-blue-800 text-sm">
+                        Открыть страницу бойцов →
+                    </a>
+                </div>
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <h3 class="font-semibold text-gray-900 mb-2">Страница бойца</h3>
+                    <p class="text-gray-600 text-sm mb-3">Детальная страница с информацией о бойце</p>
+                    <a href="fighter_page_demo.html" class="text-blue-600 hover:text-blue-800 text-sm">
+                        Открыть страницу Ислама Махачева →
+                    </a>
+                </div>
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <h3 class="font-semibold text-gray-900 mb-2">Рейтинг тяжёлого веса</h3>
+                    <p class="text-gray-600 text-sm mb-3">Рейтинг топ-15 бойцов тяжёлого веса UFC</p>
+                    <a href="heavyweight_rankings_demo.html" class="text-blue-600 hover:text-blue-800 text-sm">
+                        Открыть рейтинг тяжёлого веса →
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Второй ряд -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <h3 class="font-semibold text-gray-900 mb-2">Событие UFC 300</h3>
+                    <p class="text-gray-600 text-sm mb-3">Детальная страница события с боями и статистикой</p>
+                    <a href="event_page_demo.html" class="text-blue-600 hover:text-blue-800 text-sm">
+                        Открыть страницу события →
+                    </a>
+                </div>
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <h3 class="font-semibold text-gray-900 mb-2">Сравнение бойцов</h3>
+                    <p class="text-gray-600 text-sm mb-3">Сравните характеристики и статистику бойцов</p>
+                    <a href="compare_fighters_demo.html" class="text-blue-600 hover:text-blue-800 text-sm">
+                        Открыть сравнение бойцов →
+                    </a>
+                </div>
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <h3 class="font-semibold text-gray-900 mb-2">Заглушка</h3>
+                    <p class="text-gray-600 text-sm mb-3">Место для будущих страниц</p>
+                    <span class="text-gray-400 text-sm">Скоро...</span>
+                </div>
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <h3 class="font-semibold text-gray-900 mb-2">Заглушка</h3>
+                    <p class="text-gray-600 text-sm mb-3">Место для будущих страниц</p>
+                    <span class="text-gray-400 text-sm">Скоро...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; 2024 UFC Ranker. Все права защищены.</p>
+            <p class="mt-2 text-sm text-gray-400">
+                Демо версия с тестовыми данными из отладочной базы
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Анимация при загрузке
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.feature-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    card.style.transition = 'all 0.5s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 200);
+            });
+        });
+    </script>
+</body>
+</html>
+
+

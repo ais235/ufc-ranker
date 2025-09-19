@@ -337,3 +337,16 @@ class FighterProfilesParser(BaseParser):
         """Основной метод парсинга"""
         print("🥊 Обновление профилей бойцов...")
         self.update_fighters_from_rankings()
+
+
+
+
+
+
+
+
+
+
+
+
+

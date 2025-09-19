@@ -216,3 +216,16 @@ const UpcomingFightsPage: React.FC = () => {
 }
 
 export default UpcomingFightsPage
+
+
+
+
+
+
+
+
+
+
+
+
+

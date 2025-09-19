@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UFC 300: Pereira vs Hill - UFC Ranker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e3a8a 0%, #7c3aed 100%);
+        }
+        .event-header {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+        }
+        .main-card {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+        }
+        .fight-card {
+            transition: all 0.3s ease;
+        }
+        .fight-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .vs-text {
+            background: linear-gradient(135deg, #1e3a8a 0%, #7c3aed 100%);
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Header -->
+    <header class="bg-white shadow-lg">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex items-center justify-between">
+                <h1 class="text-3xl font-bold text-gray-900">
+                    🥊 UFC Ranker
+                </h1>
+                <nav class="space-x-4">
+                    <a href="main_page_demo.html" class="px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-100">🏠 Главная</a>
+                    <a href="heavyweight_rankings_demo.html" class="px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-100">🥊 Рейтинги</a>
+                    <a href="fighters_list_demo.html" class="px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-100">👊 Бойцы</a>
+                    <a href="#" class="px-4 py-2 rounded-lg bg-blue-600 text-white">📅 События</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-4 py-8">
+        <!-- Заголовок события -->
+        <div class="event-header rounded-lg shadow-lg overflow-hidden mb-8">
+            <div class="p-8 text-center text-white">
+                <div class="text-6xl mb-4">🏆</div>
+                <h1 class="text-4xl font-bold mb-2">UFC 300</h1>
+                <h2 class="text-2xl font-semibold mb-4">Pereira vs Hill</h2>
+                <div class="flex justify-center items-center space-x-8 text-lg">
+                    <div class="flex items-center">
+                        <span class="text-2xl mr-2">📅</span>
+                        <span>13 апреля 2024</span>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="text-2xl mr-2">📍</span>
+                        <span>Лас-Вегас, США</span>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="text-2xl mr-2">🏟️</span>
+                        <span>T-Mobile Arena</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Главный бой -->
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden mb-8">
+            <div class="main-card p-6">
+                <div class="text-center mb-4">
+                    <h2 class="text-3xl font-bold text-white mb-2">ГЛАВНЫЙ БОЙ</h2>
+                    <p class="text-white text-lg">UFC Light Heavyweight Championship</p>
+                </div>
+            </div>
+            
+            <div class="md:flex">
+                <!-- Боец 1 -->
+                <div class="md:w-1/2 p-8">
+                    <div class="text-center">
+                        <div class="h-64 bg-gray-200 rounded-lg mb-4 flex items-center justify-center relative">
+                            <img src="fighter.jpg" alt="Алекс Перейра" class="w-full h-full object-cover rounded-lg" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="text-gray-400 text-6xl" style="display: none;">🥊</div>
+                            <button class="absolute top-3 right-3 bg-blue-600 text-white text-sm px-3 py-1 rounded hover:bg-blue-700 add-to-compare" data-fighter-id="7">
+                                + Сравнить
+                            </button>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Алекс Перейра</h3>
+                        <p class="text-lg text-gray-600 mb-2">Alex Pereira</p>
+                        <p class="text-lg text-blue-600 font-semibold mb-4">"Poatan"</p>
+                        
+                        <div class="flex items-center justify-center mb-4">
+                            <img src="https://flagcdn.com/w40/br.png" alt="Бразилия" class="w-10 h-6 object-cover rounded mr-3">
+                            <span class="text-lg font-medium">Бразилия</span>
+                        </div>
+                        
+                        <div class="bg-blue-100 rounded-lg p-4 mb-4">
+                            <div class="text-3xl font-bold text-blue-600 mb-2">8-2-0</div>
+                            <div class="text-sm text-gray-600">8 побед • 2 поражения • 0 ничьих</div>
+                        </div>
+                        
+                        <div class="space-y-3 text-sm">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600">Возраст:</span>
+                                <span class="font-semibold">37 лет</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600">Рост:</span>
+                                <span class="font-semibold">193 см</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600">Вес:</span>
+                                <span class="font-semibold">93 кг</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600">Размах рук:</span>
+                                <span class="font-semibold">203 см</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VS -->
+                <div class="md:w-1/4 flex items-center justify-center p-8">
+                    <div class="text-center">
+                        <div class="vs-text text-white text-4xl font-bold w-16 h-16 rounded-full flex items-center justify-center mb-4">VS</div>
+                        <div class="text-sm text-gray-600">5 раундов</div>
+                        <div class="text-sm text-gray-600">5 минут</div>
+                    </div>
+                </div>
+
+                <!-- Боец 2 -->
+                <div class="md:w-1/2 p-8">
+                    <div class="text-center">
+                        <div class="h-64 bg-gray-200 rounded-lg mb-4 flex items-center justify-center relative">
+                            <img src="fighter.jpg" alt="Джейми Хилл" class="w-full h-full object-cover rounded-lg" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="text-gray-400 text-6xl" style="display: none;">🥊</div>
+                            <button class="absolute top-3 right-3 bg-blue-600 text-white text-sm px-3 py-1 rounded hover:bg-blue-700 add-to-compare" data-fighter-id="8">
+                                + Сравнить
+                            </button>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Джейми Хилл</h3>
+                        <p class="text-lg text-gray-600 mb-2">Jamahal Hill</p>
+                        <p class="text-lg text-blue-600 font-semibold mb-4">"Sweet Dreams"</p>
+                        
+                        <div class="flex items-center justify-center mb-4">
+                            <img src="https://flagcdn.com/w40/us.png" alt="США" class="w-10 h-6 object-cover rounded mr-3">
+                            <span class="text-lg font-medium">США</span>
+                        </div>
+                        
+                        <div class="bg-blue-100 rounded-lg p-4 mb-4">
+                            <div class="text-3xl font-bold text-blue-600 mb-2">12-1-0</div>
+                            <div class="text-sm text-gray-600">12 побед • 1 поражение • 0 ничьих</div>
+                        </div>
+                        
+                        <div class="space-y-3 text-sm">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600">Возраст:</span>
+                                <span class="font-semibold">32 года</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600">Рост:</span>
+                                <span class="font-semibold">193 см</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600">Вес:</span>
+                                <span class="font-semibold">93 кг</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600">Размах рук:</span>
+                                <span class="font-semibold">201 см</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Карточка боя -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">📋 Информация о бое</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Детали боя</h3>
+                    <div class="space-y-2">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Тип боя:</span>
+                            <span class="font-medium">Титульный бой</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Титул:</span>
+                            <span class="font-medium text-blue-600">Чемпион UFC в полутяжёлом весе</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Раунды:</span>
+                            <span class="font-medium">5 раундов по 5 минут</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Весовая категория:</span>
+                            <span class="font-medium">Полутяжёлый вес (93 кг)</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Судья:</span>
+                            <span class="font-medium">Херб Дин</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Статистика бойцов</h3>
+                    <div class="space-y-3">
+                        <div class="grid grid-cols-3 gap-4 text-center">
+                            <div class="text-gray-600 font-medium">Средний удар в минуту:</div>
+                            <div class="font-bold text-blue-600">Перейра: 4.2</div>
+                            <div class="font-bold text-red-600">Хилл: 5.1</div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-4 text-center">
+                            <div class="text-gray-600 font-medium">Точность ударов:</div>
+                            <div class="font-bold text-blue-600">Перейра: 58%</div>
+                            <div class="font-bold text-red-600">Хилл: 52%</div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-4 text-center">
+                            <div class="text-gray-600 font-medium">Защита от ударов:</div>
+                            <div class="font-bold text-blue-600">Перейра: 62%</div>
+                            <div class="font-bold text-red-600">Хилл: 55%</div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-4 text-center">
+                            <div class="text-gray-600 font-medium">Тейкдауны за бой:</div>
+                            <div class="font-bold text-blue-600">Перейра: 0.8</div>
+                            <div class="font-bold text-red-600">Хилл: 1.2</div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-4 text-center">
+                            <div class="text-gray-600 font-medium">Сабмишены за бой:</div>
+                            <div class="font-bold text-blue-600">Перейра: 0.2</div>
+                            <div class="font-bold text-red-600">Хилл: 0.1</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Предварительные бои -->
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">🥊 Предварительные бои</h2>
+            
+            <div class="space-y-4">
+                <!-- Бой 1 -->
+                <div class="fight-card bg-gray-50 border border-gray-200 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center">
+                            <div class="bg-red-600 text-white text-sm font-bold px-2 py-1 rounded mr-3">CO-MAIN</div>
+                        </div>
+                        <span class="text-sm text-gray-500">3 раунда</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <!-- Боец 1 -->
+                        <div class="flex items-center w-1/3">
+                            <div class="h-16 w-16 bg-gray-200 rounded-full mr-3 flex items-center justify-center">
+                                <img src="fighter.jpg" alt="Джон Джонс" class="w-full h-full object-cover rounded-full" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div class="text-gray-400 text-2xl" style="display: none;">🥊</div>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900">Джон Джонс</h4>
+                                <p class="text-sm text-gray-600">Jon Jones</p>
+                                <p class="text-xs text-gray-500">27-1-0</p>
+                                <div class="flex items-center mt-1">
+                                    <img src="https://flagcdn.com/w16/us.png" alt="US" class="w-4 h-3 mr-1">
+                                    <span class="text-xs text-gray-500">США</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- VS и категория -->
+                        <div class="text-center w-1/3">
+                            <div class="text-2xl font-bold text-gray-400 mb-1">VS</div>
+                            <div class="text-sm text-gray-600">Полутяжёлый вес</div>
+                        </div>
+                        
+                        <!-- Боец 2 -->
+                        <div class="flex items-center justify-end w-1/3">
+                            <div>
+                                <h4 class="font-semibold text-gray-900 text-right">Стипе Миочич</h4>
+                                <p class="text-sm text-gray-600 text-right">Stipe Miocic</p>
+                                <p class="text-xs text-gray-500 text-right">20-4-0</p>
+                                <div class="flex items-center justify-end mt-1">
+                                    <span class="text-xs text-gray-500 mr-1">США</span>
+                                    <img src="https://flagcdn.com/w16/us.png" alt="US" class="w-4 h-3">
+                                </div>
+                            </div>
+                            <div class="h-16 w-16 bg-gray-200 rounded-full ml-3 flex items-center justify-center">
+                                <img src="fighter.jpg" alt="Стипе Миочич" class="w-full h-full object-cover rounded-full" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div class="text-gray-400 text-2xl" style="display: none;">🥊</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Бой 2 -->
+                <div class="fight-card bg-gray-50 border border-gray-200 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center">
+                            <div class="bg-blue-600 text-white text-sm font-bold px-2 py-1 rounded mr-3">FEATURED</div>
+                        </div>
+                        <span class="text-sm text-gray-500">3 раунда</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <!-- Боец 1 -->
+                        <div class="flex items-center w-1/3">
+                            <div class="h-16 w-16 bg-gray-200 rounded-full mr-3 flex items-center justify-center">
+                                <img src="fighter.jpg" alt="Ислам Махачев" class="w-full h-full object-cover rounded-full" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div class="text-gray-400 text-2xl" style="display: none;">🥊</div>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900">Ислам Махачев</h4>
+                                <p class="text-sm text-gray-600">Islam Makhachev</p>
+                                <p class="text-xs text-gray-500">25-1-0</p>
+                                <div class="flex items-center mt-1">
+                                    <img src="https://flagcdn.com/w16/ru.png" alt="RU" class="w-4 h-3 mr-1">
+                                    <span class="text-xs text-gray-500">Россия</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- VS и категория -->
+                        <div class="text-center w-1/3">
+                            <div class="text-2xl font-bold text-gray-400 mb-1">VS</div>
+                            <div class="text-sm text-gray-600">Лёгкий вес</div>
+                        </div>
+                        
+                        <!-- Боец 2 -->
+                        <div class="flex items-center justify-end w-1/3">
+                            <div>
+                                <h4 class="font-semibold text-gray-900 text-right">Чарльз Оливейра</h4>
+                                <p class="text-sm text-gray-600 text-right">Charles Oliveira</p>
+                                <p class="text-xs text-gray-500 text-right">34-9-0</p>
+                                <div class="flex items-center justify-end mt-1">
+                                    <span class="text-xs text-gray-500 mr-1">Бразилия</span>
+                                    <img src="https://flagcdn.com/w16/br.png" alt="BR" class="w-4 h-3">
+                                </div>
+                            </div>
+                            <div class="h-16 w-16 bg-gray-200 rounded-full ml-3 flex items-center justify-center">
+                                <img src="fighter.jpg" alt="Чарльз Оливейра" class="w-full h-full object-cover rounded-full" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div class="text-gray-400 text-2xl" style="display: none;">🥊</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Бой 3 -->
+                <div class="fight-card bg-gray-50 border border-gray-200 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center">
+                            <div class="bg-green-600 text-white text-sm font-bold px-2 py-1 rounded mr-3">PRELIM</div>
+                        </div>
+                        <span class="text-sm text-gray-500">3 раунда</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <!-- Боец 1 -->
+                        <div class="flex items-center w-1/3">
+                            <div class="h-16 w-16 bg-gray-200 rounded-full mr-3 flex items-center justify-center">
+                                <img src="fighter.jpg" alt="Аманда Нунес" class="w-full h-full object-cover rounded-full" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div class="text-gray-400 text-2xl" style="display: none;">🥊</div>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900">Аманда Нунес</h4>
+                                <p class="text-sm text-gray-600">Amanda Nunes</p>
+                                <p class="text-xs text-gray-500">22-5-0</p>
+                                <div class="flex items-center mt-1">
+                                    <img src="https://flagcdn.com/w16/br.png" alt="BR" class="w-4 h-3 mr-1">
+                                    <span class="text-xs text-gray-500">Бразилия</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- VS и категория -->
+                        <div class="text-center w-1/3">
+                            <div class="text-2xl font-bold text-gray-400 mb-1">VS</div>
+                            <div class="text-sm text-gray-600">Женский легчайший вес</div>
+                        </div>
+                        
+                        <!-- Боец 2 -->
+                        <div class="flex items-center justify-end w-1/3">
+                            <div>
+                                <h4 class="font-semibold text-gray-900 text-right">Валентина Шевченко</h4>
+                                <p class="text-sm text-gray-600 text-right">Valentina Shevchenko</p>
+                                <p class="text-xs text-gray-500 text-right">23-4-0</p>
+                                <div class="flex items-center justify-end mt-1">
+                                    <span class="text-xs text-gray-500 mr-1">Кыргызстан</span>
+                                    <img src="https://flagcdn.com/w16/kg.png" alt="KG" class="w-4 h-3">
+                                </div>
+                            </div>
+                            <div class="h-16 w-16 bg-gray-200 rounded-full ml-3 flex items-center justify-center">
+                                <img src="fighter.jpg" alt="Валентина Шевченко" class="w-full h-full object-cover rounded-full" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div class="text-gray-400 text-2xl" style="display: none;">🥊</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Бой 4 -->
+                <div class="fight-card bg-gray-50 border border-gray-200 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center">
+                            <div class="bg-gray-600 text-white text-sm font-bold px-2 py-1 rounded mr-3">EARLY</div>
+                        </div>
+                        <span class="text-sm text-gray-500">3 раунда</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <!-- Боец 1 -->
+                        <div class="flex items-center w-1/3">
+                            <div class="h-16 w-16 bg-gray-200 rounded-full mr-3 flex items-center justify-center">
+                                <img src="fighter.jpg" alt="Фрэнсис Нганну" class="w-full h-full object-cover rounded-full" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div class="text-gray-400 text-2xl" style="display: none;">🥊</div>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900">Фрэнсис Нганну</h4>
+                                <p class="text-sm text-gray-600">Francis Ngannou</p>
+                                <p class="text-xs text-gray-500">17-3-0</p>
+                                <div class="flex items-center mt-1">
+                                    <img src="https://flagcdn.com/w16/cm.png" alt="CM" class="w-4 h-3 mr-1">
+                                    <span class="text-xs text-gray-500">Камерун</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- VS и категория -->
+                        <div class="text-center w-1/3">
+                            <div class="text-2xl font-bold text-gray-400 mb-1">VS</div>
+                            <div class="text-sm text-gray-600">Тяжёлый вес</div>
+                        </div>
+                        
+                        <!-- Боец 2 -->
+                        <div class="flex items-center justify-end w-1/3">
+                            <div>
+                                <h4 class="font-semibold text-gray-900 text-right">Сергей Павлович</h4>
+                                <p class="text-sm text-gray-600 text-right">Sergei Pavlovich</p>
+                                <p class="text-xs text-gray-500 text-right">18-2-0</p>
+                                <div class="flex items-center justify-end mt-1">
+                                    <span class="text-xs text-gray-500 mr-1">Россия</span>
+                                    <img src="https://flagcdn.com/w16/ru.png" alt="RU" class="w-4 h-3">
+                                </div>
+                            </div>
+                            <div class="h-16 w-16 bg-gray-200 rounded-full ml-3 flex items-center justify-center">
+                                <img src="fighter.jpg" alt="Сергей Павлович" class="w-full h-full object-cover rounded-full" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div class="text-gray-400 text-2xl" style="display: none;">🥊</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; 2024 UFC Ranker. Все права защищены.</p>
+            <p class="mt-2 text-sm text-gray-400">
+                UFC 300: Pereira vs Hill - 13 апреля 2024, Лас-Вегас
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Анимация при загрузке
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.fight-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    card.style.transition = 'all 0.5s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+
+            // Функционал сравнения
+            initializeCompare();
+        });
+
+        function initializeCompare() {
+            // Обработчики для кнопок добавления в сравнение
+            document.querySelectorAll('.add-to-compare').forEach(button => {
+                button.addEventListener('click', function() {
+                    const fighterId = parseInt(this.dataset.fighterId);
+                    addToCompare(fighterId);
+                });
+            });
+        }
+
+        function addToCompare(fighterId) {
+            // Сохраняем в localStorage
+            let compareList = JSON.parse(localStorage.getItem('compareList') || '[]');
+            
+            if (compareList.length >= 2) {
+                alert('Можно сравнить максимум 2 бойцов');
+                return;
+            }
+
+            if (compareList.includes(fighterId)) {
+                alert('Боец уже добавлен в сравнение');
+                return;
+            }
+
+            compareList.push(fighterId);
+            localStorage.setItem('compareList', JSON.stringify(compareList));
+            
+            // Обновляем UI
+            updateCompareButtons();
+            showCompareNotification();
+        }
+
+        function updateCompareButtons() {
+            const compareList = JSON.parse(localStorage.getItem('compareList') || '[]');
+            
+            document.querySelectorAll('.add-to-compare').forEach(button => {
+                const fighterId = parseInt(button.dataset.fighterId);
+                if (compareList.includes(fighterId)) {
+                    button.textContent = '✓ В сравнении';
+                    button.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+                    button.classList.add('bg-green-600', 'hover:bg-green-700');
+                    button.disabled = true;
+                } else if (compareList.length >= 2) {
+                    button.textContent = '+ Сравнить';
+                    button.classList.remove('bg-green-600', 'hover:bg-green-700');
+                    button.classList.add('bg-gray-400', 'hover:bg-gray-400');
+                    button.disabled = true;
+                } else {
+                    button.textContent = '+ Сравнить';
+                    button.classList.remove('bg-green-600', 'hover:bg-green-700', 'bg-gray-400', 'hover:bg-gray-400');
+                    button.classList.add('bg-blue-600', 'hover:bg-blue-700');
+                    button.disabled = false;
+                }
+            });
+        }
+
+        function showCompareNotification() {
+            const compareList = JSON.parse(localStorage.getItem('compareList') || '[]');
+            
+            // Создаем уведомление
+            const notification = document.createElement('div');
+            notification.className = 'fixed top-20 right-4 bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg z-50';
+            notification.innerHTML = `
+                <div class="flex items-center">
+                    <span>${compareList.length} бойцов в сравнении</span>
+                    <a href="compare_fighters_demo.html" class="ml-2 bg-white text-blue-600 px-2 py-1 rounded text-sm hover:bg-gray-100">
+                        Сравнить
+                    </a>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Удаляем уведомление через 3 секунды
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Обновляем кнопки при загрузке страницы
+        updateCompareButtons();
+    </script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+groups:
+  - name: ufc_ranker_rules
+    rules:
+      # Алерты для API
+      - alert: HighErrorRate
+        expr: rate(http_requests_total{status=~"5.."}[5m]) > 0.1
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Высокий уровень ошибок API"
+          description: "Уровень ошибок 5xx превышает 10% за последние 5 минут"
+
+      - alert: HighResponseTime
+        expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m])) > 2
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Высокое время ответа API"
+          description: "95-й перцентиль времени ответа превышает 2 секунды"
+
+      # Алерты для базы данных
+      - alert: DatabaseConnectionsHigh
+        expr: postgres_stat_activity_count > 80
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Высокое количество подключений к БД"
+          description: "Количество активных подключений к PostgreSQL превышает 80"
+
+      - alert: DatabaseSlowQueries
+        expr: rate(postgres_stat_database_tup_returned[5m]) < 100
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Медленные запросы к БД"
+          description: "Низкая активность запросов к базе данных"
+
+      # Алерты для Redis
+      - alert: RedisMemoryHigh
+        expr: redis_memory_used_bytes / redis_memory_max_bytes > 0.8
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Высокое использование памяти Redis"
+          description: "Использование памяти Redis превышает 80%"
+
+      - alert: RedisConnectionFailed
+        expr: redis_up == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Redis недоступен"
+          description: "Не удается подключиться к Redis"
+
+      # Алерты для Celery
+      - alert: CeleryTaskFailed
+        expr: rate(celery_task_failed_total[5m]) > 0.1
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Высокий уровень неудачных задач Celery"
+          description: "Уровень неудачных задач Celery превышает 10% за 5 минут"
+
+      - alert: CeleryQueueBacklog
+        expr: celery_queue_length > 1000
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Большая очередь задач Celery"
+          description: "Количество задач в очереди превышает 1000"
+
+      # Алерты для системы
+      - alert: HighCPUUsage
+        expr: 100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Высокое использование CPU"
+          description: "Использование CPU превышает 80%"
+
+      - alert: HighMemoryUsage
+        expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 80
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Высокое использование памяти"
+          description: "Использование памяти превышает 80%"
+
+      - alert: DiskSpaceLow
+        expr: (1 - (node_filesystem_avail_bytes / node_filesystem_size_bytes)) * 100 > 85
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Мало места на диске"
+          description: "Свободное место на диске менее 15%"

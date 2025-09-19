@@ -134,3 +134,16 @@ const FighterCard: React.FC<FighterCardProps> = ({
 }
 
 export default FighterCard
+
+
+
+
+
+
+
+
+
+
+
+
+

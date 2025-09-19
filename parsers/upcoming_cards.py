@@ -229,3 +229,16 @@ class UpcomingCardsParser(BaseParser):
         self.save_to_database(events)
         
         return events
+
+
+
+
+
+
+
+
+
+
+
+
+
