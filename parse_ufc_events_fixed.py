@@ -163,9 +163,26 @@ class UFCEventsParserFixed:
         """Извлекает данные о событии из ячеек таблицы"""
         
         try:
-            # Название события (обычно во второй ячейке)
-            event_name_cell = cells[1]
+            # Для секции Scheduled events структура: Event, Date, Venue, Location, Ref.
+            # Для секции Past events структура: Event, Date, Venue, Location, Attendance, Ref.
+            
+            if section_type == "Scheduled_events":
+                # Scheduled events: Event, Date, Venue, Location, Ref.
+                event_name_cell = cells[0]  # Первая колонка - название события
+                date_cell = cells[1]         # Вторая колонка - дата
+                venue_cell = cells[2] if len(cells) > 2 else None  # Третья колонка - место
+                location_cell = cells[3] if len(cells) > 3 else None  # Четвертая колонка - город
+            else:
+                # Past events: Event, Date, Venue, Location, Attendance, Ref.
+                event_name_cell = cells[0]  # Первая колонка - название события
+                date_cell = cells[1]        # Вторая колонка - дата
+                venue_cell = cells[2] if len(cells) > 2 else None  # Третья колонка - место
+                location_cell = cells[3] if len(cells) > 3 else None  # Четвертая колонка - город
+            
             event_name = event_name_cell.get_text(strip=True)
+            date_text = date_cell.get_text(strip=True)
+            venue_text = venue_cell.get_text(strip=True) if venue_cell else ""
+            location_text = location_cell.get_text(strip=True) if location_cell else ""
             
             # Очищаем название от лишних символов
             event_name = re.sub(r'\[.*?\]', '', event_name)  # Убираем [edit]
@@ -173,15 +190,6 @@ class UFCEventsParserFixed:
             
             if not event_name or event_name in ['Event', 'Date', 'Venue', 'City', '#']:
                 return None
-            
-            # Дата события (обычно во второй ячейке)
-            date_text = cells[1].get_text(strip=True) if len(cells) > 1 else ""
-            
-            # Место проведения (обычно в третьей ячейке)
-            venue_text = cells[2].get_text(strip=True) if len(cells) > 2 else ""
-            
-            # Город (обычно в четвертой ячейке)
-            location_text = cells[3].get_text(strip=True) if len(cells) > 3 else ""
             
             # Парсим дату
             event_date = self.parse_date(date_text)
@@ -232,6 +240,8 @@ class UFCEventsParserFixed:
                 '%Y-%m-%d',       # 2023-01-01
                 '%m/%d/%Y',       # 01/01/2023
                 '%d/%m/%Y',       # 01/01/2023
+                '%b %d, %Y',      # Sep 28, 2025
+                '%B %Y',          # June 2026
             ]
             
             for fmt in date_formats:
