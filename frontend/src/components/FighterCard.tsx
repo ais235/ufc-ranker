@@ -147,3 +147,10 @@ export default FighterCard
 
 
 
+
+
+
+
+
+
+

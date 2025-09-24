@@ -55,6 +55,16 @@ class Fighter(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     
+    # Новые поля из личных страниц Wikipedia
+    full_name = Column(String(200))     # Полное имя бойца
+    birth_place = Column(String(200))   # Место рождения
+    stance = Column(String(50))         # Боевая стойка
+    team = Column(String(200))          # Тренировочная команда/клуб
+    trainer = Column(String(200))       # Главный тренер
+    belt_rank = Column(String(100))     # Ранг в BJJ
+    years_active = Column(String(50))   # Годы активности в ММА
+    current_division = Column(String(100))  # Текущий дивизион
+    
     # Связи
     rankings = relationship("Ranking", back_populates="fighter")
     fight_record = relationship("FightRecord", back_populates="fighter", uselist=False)

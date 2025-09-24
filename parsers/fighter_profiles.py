@@ -350,3 +350,10 @@ class FighterProfilesParser(BaseParser):
 
 
 
+
+
+
+
+
+
+
