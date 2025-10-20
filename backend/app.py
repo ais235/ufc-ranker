@@ -31,8 +31,11 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:3000",  # Локальная разработка
         "https://*.railway.app",  # Railway домены
-        "https://your-domain.com",  # Ваш домен (замените на реальный)
-        "https://www.your-domain.com"  # Ваш домен с www
+        "https://*.pythonanywhere.com",  # PythonAnywhere домены
+        "https://voltfighters.ru",  # Ваш домен
+        "https://www.voltfighters.ru",  # Ваш домен с www
+        "http://voltfighters.ru",  # HTTP версия
+        "http://www.voltfighters.ru"  # HTTP версия с www
     ],
     allow_credentials=True,
     allow_methods=["*"],

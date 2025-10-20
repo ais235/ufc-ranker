@@ -21,6 +21,12 @@ wheels/
 *.egg
 MANIFEST
 
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
 # Virtual environments
 venv/
 env/
@@ -158,6 +164,9 @@ verify_*.py
 add_*.py
 bash.exe.stackdump
 parser_output.txt
+
+# Allow domain check script
+!check_domain.py
 
 # Excel files
 *.xlsx
