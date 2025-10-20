@@ -1,0 +1,19 @@
+# PythonAnywhere конфигурация
+# Этот файл содержит настройки для PythonAnywhere
+
+# Путь к проекту (замените yourusername на ваш username)
+PROJECT_PATH = '/home/yourusername/ufc-ranker'
+
+# URL вашего сайта
+SITE_URL = 'https://yourusername.pythonanywhere.com'
+
+# Настройки базы данных
+DATABASE_URL = 'sqlite:///./ufc_ranker_v2.db'
+
+# Настройки статических файлов
+STATIC_URL = '/static/'
+STATIC_ROOT = '/home/yourusername/ufc-ranker/frontend/dist/'
+
+# Настройки медиа файлов
+MEDIA_URL = '/media/'
+MEDIA_ROOT = '/home/yourusername/ufc-ranker/media/'
