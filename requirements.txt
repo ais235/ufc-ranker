@@ -1,25 +1,21 @@
-# Основные зависимости для парсинга
-requests>=2.28.0
-beautifulsoup4>=4.11.0
-lxml>=4.9.0
+# API (FastAPI)
+fastapi>=0.95.0
+uvicorn[standard]>=0.20.0
+pydantic>=1.10.0
 
 # База данных
 sqlalchemy>=1.4.0
+psycopg2-binary>=2.9.0  # PostgreSQL драйвер
 alembic>=1.8.0
 
-# API (FastAPI)
-fastapi>=0.95.0
-uvicorn>=0.20.0
-pydantic>=1.10.0
-
-# Дополнительные утилиты
-python-dotenv>=0.19.0
-
-# UFC API интеграция
-ufc_api>=1.0.0
-
-# Обработка данных
+# Парсинг данных
+requests>=2.28.0
+beautifulsoup4>=4.11.0
+lxml>=4.9.0
 pandas>=1.5.0
+
+# Утилиты
+python-dotenv>=0.19.0
 
 
 

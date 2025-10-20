@@ -212,3 +212,10 @@ python карточка_бойца/generate_topuria_fighter_card.py
 - Добавление TypeScript для JavaScript
 - Улучшение обработки ошибок
 - Добавление unit-тестов
+
+
+
+
+
+
+

@@ -87,6 +87,8 @@ export const api = {
     limit?: number
     fighter_id?: number
     weight_class_id?: number
+    event_id?: number
+    event_name?: string
   }): Promise<Fight[]> => {
     const response = await apiClient.get('/fights', { params })
     return response.data

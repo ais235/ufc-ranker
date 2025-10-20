@@ -1,0 +1,42 @@
+# Systemd сервис для UFC Ranker
+# Файл: /etc/systemd/system/ufc-ranker.service
+
+[Unit]
+Description=UFC Ranker Backend API
+After=network.target postgresql.service
+Wants=postgresql.service
+
+[Service]
+Type=simple
+User=ufcranker
+Group=ufcranker
+WorkingDirectory=/home/ufcranker/ufc-ranker
+Environment=PATH=/home/ufcranker/ufc-ranker/venv/bin:/usr/local/bin:/usr/bin:/bin
+Environment=PYTHONPATH=/home/ufcranker/ufc-ranker
+EnvironmentFile=/home/ufcranker/ufc-ranker/.env
+
+ExecStart=/home/ufcranker/ufc-ranker/venv/bin/python start_production.py
+ExecReload=/bin/kill -HUP $MAINPID
+
+# Перезапуск при сбоях
+Restart=always
+RestartSec=10
+
+# Лимиты ресурсов
+LimitNOFILE=65536
+LimitNPROC=4096
+
+# Безопасность
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/home/ufcranker/ufc-ranker
+
+# Логирование
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=ufc-ranker
+
+[Install]
+WantedBy=multi-user.target

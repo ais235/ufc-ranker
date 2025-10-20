@@ -28,7 +28,12 @@ app = FastAPI(
 # CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # В продакшене замените на конкретные домены
+    allow_origins=[
+        "http://localhost:3000",  # Локальная разработка
+        "https://*.railway.app",  # Railway домены
+        "https://your-domain.com",  # Ваш домен (замените на реальный)
+        "https://www.your-domain.com"  # Ваш домен с www
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -60,7 +65,7 @@ class FighterResponse(BaseModel):
 
 class WeightClassResponse(BaseModel):
     id: int
-    name: str  # Основное имя для отображения
+    name: str  # Основное имя для отображения (будет заполнено из name_ru)
     name_ru: str
     name_en: Optional[str] = None
     weight_min: Optional[int] = None
@@ -73,7 +78,9 @@ class WeightClassResponse(BaseModel):
         from_attributes = True
 
 class RankingResponse(BaseModel):
+    id: int
     fighter: FighterResponse
+    weight_class: str
     rank_position: Optional[int] = None
     is_champion: bool = False
     rank_change: int = 0
@@ -112,11 +119,13 @@ class UpcomingFightResponse(BaseModel):
 class EventResponse(BaseModel):
     id: int
     name: str
-    date: Optional[str] = None
+    event_date: Optional[str] = None
     location: Optional[str] = None
     venue: Optional[str] = None
     attendance: Optional[int] = None
     image_url: Optional[str] = None
+    description: Optional[str] = None
+    is_upcoming: Optional[bool] = None
     
     class Config:
         from_attributes = True
@@ -125,20 +134,38 @@ class EventResponse(BaseModel):
     def from_orm(cls, obj):
         data = obj.__dict__.copy()
         if 'date' in data and data['date']:
-            data['date'] = str(data['date'])
+            data['event_date'] = str(data['date'])
         return cls(**data)
 
 class FightResponse(BaseModel):
     id: int
-    event: EventResponse
-    fighter1: FighterResponse
-    fighter2: FighterResponse
-    weight_class: WeightClassResponse
-    scheduled_rounds: int
-    result: Optional[str] = None
+    event_name: Optional[str] = None
+    fighter1_name: Optional[str] = None
+    fighter2_name: Optional[str] = None
+    weight_class: Optional[str] = None
+    scheduled_rounds: int = 3
+    method: Optional[str] = None
+    method_details: Optional[str] = None
+    round: Optional[int] = None
+    time: Optional[str] = None
     fight_date: Optional[str] = None
+    location: Optional[str] = None
+    notes: Optional[str] = None
     is_title_fight: bool = False
     is_main_event: bool = False
+    is_win: Optional[str] = None
+    is_loss: Optional[str] = None
+    is_draw: Optional[str] = None
+    is_nc: Optional[str] = None
+    fighter1_record: Optional[str] = None
+    fighter2_record: Optional[str] = None
+    fighter1_country: Optional[str] = None
+    fighter2_country: Optional[str] = None
+    card_type: Optional[str] = None
+    referee: Optional[str] = None
+    winner_name: Optional[str] = None
+    judges_score: Optional[str] = None
+    fight_order: Optional[int] = None
     
     class Config:
         from_attributes = True
@@ -146,10 +173,10 @@ class FightResponse(BaseModel):
     @classmethod
     def from_orm(cls, obj):
         data = obj.__dict__.copy()
+        # Удаляем служебные поля SQLAlchemy
+        data.pop('_sa_instance_state', None)
         if 'fight_date' in data and data['fight_date']:
             data['fight_date'] = str(data['fight_date'])
-        if 'event' in data and data['event']:
-            data['event'] = EventResponse.from_orm(data['event'])
         return cls(**data)
 
 class FightStatsResponse(BaseModel):
@@ -215,7 +242,7 @@ async def root():
     """Корневой эндпоинт"""
     return {
         "message": "UFC Ranker API",
-        "version": "1.0.0",
+        "version": "1.0.1-FIXED",  # Изменили версию, чтобы убедиться, что изменения применились
         "endpoints": {
             "fighters": "/api/fighters",
             "weight_classes": "/api/weight-classes",
@@ -246,11 +273,15 @@ async def get_fighters(
     # Преобразуем данные для API
     result = []
     for fighter in fighters:
+        # Безопасная подстановка имени (защита от NULL)
+        safe_name_ru = fighter.name_ru or fighter.name_en or "Unknown Fighter"
+        safe_name_en = fighter.name_en or fighter.name_ru or "Unknown Fighter"
+        
         result.append(FighterResponse(
             id=fighter.id,
-            name=fighter.name_ru,  # Основное имя
-            name_ru=fighter.name_ru,
-            name_en=fighter.name_en,
+            name=safe_name_ru,  # Основное имя
+            name_ru=safe_name_ru,
+            name_en=safe_name_en,
             nickname=fighter.nickname,
             country=fighter.country,
             country_flag_url=fighter.country_flag_url,
@@ -260,9 +291,9 @@ async def get_fighters(
             reach=fighter.reach,
             age=fighter.age,
             weight_class=fighter.weight_class,
-            wins=fighter.win or 0,
-            losses=fighter.lose or 0,
-            draws=fighter.draw or 0,
+            wins=fighter.wins or 0,
+            losses=fighter.losses or 0,
+            draws=fighter.draws or 0,
             weight_class_id=None,  # Пока нет связи
             career=getattr(fighter, 'career', None)
         ))
@@ -282,41 +313,91 @@ async def get_fighter(fighter_id: int, db: Session = Depends(get_db)):
 @app.get("/api/weight-classes", response_model=List[WeightClassResponse])
 async def get_weight_classes(db: Session = Depends(get_db)):
     """Получить список весовых категорий"""
-    weight_classes = db.query(WeightClass).all()
-    
-    # Преобразуем данные для API
-    result = []
-    for wc in weight_classes:
-        # Формируем строку с лимитом веса
-        weight_limit = None
-        if wc.weight_min is not None and wc.weight_max is not None:
-            weight_limit = f"{wc.weight_min}-{wc.weight_max} кг"
-        elif wc.weight_max is not None:
-            weight_limit = f"до {wc.weight_max} кг"
-        elif wc.weight_min is not None:
-            weight_limit = f"от {wc.weight_min} кг"
+    try:
+        weight_classes = db.query(WeightClass).all()
         
-        result.append(WeightClassResponse(
-            id=wc.id,
-            name=wc.name_ru,  # Основное имя
-            name_ru=wc.name_ru,
-            name_en=wc.name_en,
-            weight_min=wc.weight_min,
-            weight_max=wc.weight_max,
-            weight_limit=weight_limit,
-            gender=wc.gender,
-            is_p4p=wc.is_p4p
-        ))
-    
-    return result
+        # Простое преобразование данных
+        result = []
+        for wc in weight_classes:
+            # Формируем строку с лимитом веса
+            weight_limit = None
+            if wc.weight_min is not None and wc.weight_max is not None:
+                weight_limit = f"{wc.weight_min}-{wc.weight_max} кг"
+            elif wc.weight_max is not None:
+                weight_limit = f"до {wc.weight_max} кг"
+            elif wc.weight_min is not None:
+                weight_limit = f"от {wc.weight_min} кг"
+            
+            result.append(WeightClassResponse(
+                id=wc.id,
+                name=wc.name_ru or wc.name_en or "Неизвестная категория",
+                name_ru=wc.name_ru or "",
+                name_en=wc.name_en or "",
+                weight_min=wc.weight_min,
+                weight_max=wc.weight_max,
+                weight_limit=weight_limit,
+                gender=wc.gender or "male",
+                is_p4p=wc.is_p4p or False
+            ))
+        
+        return result
+    except Exception as e:
+        print(f"Ошибка в get_weight_classes: {e}")
+        return []
 
 @app.get("/api/rankings", response_model=List[RankingResponse])
 async def get_rankings(db: Session = Depends(get_db)):
     """Получить все рейтинги"""
     try:
-        rankings = db.query(Ranking).join(Fighter).join(WeightClass).all()
+        # Используем прямой SQL запрос
+        from sqlalchemy import text
+        
+        result = db.execute(text("""
+            SELECT r.id, r.fighter_id, r.weight_class, r.rank_position, r.is_champion, r.rank_change,
+                   f.name_ru, f.name_en, f.nickname, f.country, f.age, f.height, f.reach, f.weight,
+                   f.wins, f.losses, f.draws, f.no_contests, f.ufc_wins, f.ufc_losses, f.ufc_draws, f.ufc_no_contests, f.fighting_out_of
+            FROM rankings r
+            LEFT JOIN fighters f ON r.fighter_id = f.id
+            ORDER BY r.weight_class, r.rank_position
+        """)).fetchall()
+        
+        rankings = []
+        for row in result:
+            rankings.append(RankingResponse(
+                id=row[0],
+                fighter=FighterResponse(
+                    id=row[1],
+                    name=row[6] or row[7] or "Боец",
+                    name_ru=row[6] or "",
+                    name_en=row[7] or "",
+                    nickname=row[8] or "",
+                    country=row[9] or "",
+                    age=row[10],
+                    height=row[11],
+                    reach=row[12],
+                    weight=row[13],
+                    weight_class_id=None,  # Убираем проблемное поле
+                    wins=row[14] or 0,
+                    losses=row[15] or 0,
+                    draws=row[16] or 0,
+                    no_contests=row[17] or 0,
+                    ufc_wins=row[18] or 0,
+                    ufc_losses=row[19] or 0,
+                    ufc_draws=row[20] or 0,
+                    ufc_no_contests=row[21] or 0,
+                    fighting_out_of=row[22] or "",
+                    career=None
+                ),
+                weight_class=row[2],
+                rank_position=row[3],
+                is_champion=row[4],
+                rank_change=row[5]
+            ))
+        
+        print(f"API: Загружено {len(rankings)} рейтингов")
         return rankings
     except Exception as e:
+        print(f"Ошибка API рейтингов: {e}")
         return []
 
 @app.get("/api/rankings/{class_id}", response_model=List[RankingResponse])
@@ -466,23 +547,111 @@ async def get_fights(
     limit: int = 50,
     fighter_id: Optional[int] = None,
     weight_class_id: Optional[int] = None,
+    event_id: Optional[int] = None,
+    event_name: Optional[str] = None,
     db: Session = Depends(get_db)
 ):
-    """Получить список боев"""
+    """Получить список боев с дополнительной информацией о бойцах"""
+    import logging
+    logger = logging.getLogger("uvicorn.error")
+    logger.error(f"!!! FIGHTS API CALLED: event_id={event_id}, event_name={event_name}")
+    
     try:
         query = db.query(Fight)
+        logger.error(f"!!! Query created")
         
         if fighter_id:
-            query = query.filter(
-                (Fight.fighter1_id == fighter_id) | (Fight.fighter2_id == fighter_id)
-            )
+            # Получаем имя бойца по ID
+            fighter = db.query(Fighter).filter(Fighter.id == fighter_id).first()
+            if fighter:
+                fighter_name = fighter.name_en or fighter.name_ru
+                query = query.filter(
+                    (Fight.fighter1_name == fighter_name) | (Fight.fighter2_name == fighter_name)
+                )
         
         if weight_class_id:
-            query = query.filter(Fight.weight_class_id == weight_class_id)
+            # Получаем название весовой категории по ID
+            weight_class = db.query(WeightClass).filter(WeightClass.id == weight_class_id).first()
+            if weight_class:
+                query = query.filter(Fight.weight_class == weight_class.name_en)
         
-        fights = query.order_by(Fight.fight_date.desc()).offset(skip).limit(limit).all()
-        return [FightResponse.from_orm(fight) for fight in fights]
+        if event_id:
+            # Получаем название события по ID
+            event = db.query(Event).filter(Event.id == event_id).first()
+            logger.error(f"!!! event_id = {event_id}, event = {event}")
+            if event:
+                logger.error(f"!!! Ищем бои для события '{event.name}' (ID: {event_id})")
+                query = query.filter(Fight.event_name == event.name)
+            else:
+                logger.error(f"!!! Событие с ID {event_id} не найдено")
+        
+        if event_name:
+            query = query.filter(Fight.event_name == event_name)
+        
+        # Сортируем бои: сначала по типу карты, затем по порядку в карте, затем по главному событию и титульному бою
+        fights = query.order_by(
+            Fight.card_type.desc(),  # Main card -> Preliminary card -> Early preliminary card
+            Fight.fight_order.asc(),  # Порядок внутри карты
+            Fight.is_main_event.desc(),
+            Fight.is_title_fight.desc(),
+            Fight.fight_date.desc()
+        ).offset(skip).limit(limit).all()
+        
+        logger.error(f"!!! Итоговое количество боев после фильтрации: {len(fights)}")
+        
+        result = []
+        for fight in fights:
+            try:
+                # Получаем дополнительную информацию о бойцах
+                fighter1_data = None
+                fighter2_data = None
+                
+                if fight.fighter1_name:
+                    fighter1_data = db.query(Fighter).filter(
+                        (Fighter.name_en == fight.fighter1_name) | (Fighter.name_ru == fight.fighter1_name)
+                    ).first()
+                
+                if fight.fighter2_name:
+                    fighter2_data = db.query(Fighter).filter(
+                        (Fighter.name_en == fight.fighter2_name) | (Fighter.name_ru == fight.fighter2_name)
+                    ).first()
+                
+                # Создаем расширенный ответ с информацией о бойцах
+                fight_data = fight.__dict__.copy()
+                fight_data.pop('_sa_instance_state', None)
+                
+                # Добавляем информацию о бойцах
+                if fighter1_data:
+                    fight_data['fighter1_country'] = fighter1_data.country
+                    fight_data['fighter1_record'] = f"{fighter1_data.wins}-{fighter1_data.losses}-{fighter1_data.draws}-{fighter1_data.no_contests}"
+                else:
+                    fight_data['fighter1_country'] = None
+                    fight_data['fighter1_record'] = fight.fighter1_record or '0-0-0-0'
+                
+                if fighter2_data:
+                    fight_data['fighter2_country'] = fighter2_data.country
+                    fight_data['fighter2_record'] = f"{fighter2_data.wins}-{fighter2_data.losses}-{fighter2_data.draws}-{fighter2_data.no_contests}"
+                else:
+                    fight_data['fighter2_country'] = None
+                    fight_data['fighter2_record'] = fight.fighter2_record or '0-0-0-0'
+                
+                # Преобразуем дату в строку
+                if 'fight_date' in fight_data and fight_data['fight_date']:
+                    fight_data['fight_date'] = str(fight_data['fight_date'])
+                
+                fight_response = FightResponse(**fight_data)
+                result.append(fight_response)
+                
+            except Exception as e:
+                logger.error(f"!!! Ошибка при сериализации боя {fight.id}: {e}")
+                continue
+        
+        logger.error(f"!!! Возвращаем {len(result)} боев")
+        return result
     except Exception as e:
+        logger.error(f"!!! Ошибка в get_fights: {e}")
+        import traceback
+        traceback.print_exc()
         return []
 
 @app.get("/api/fights/{fight_id}", response_model=FightResponse)
@@ -583,6 +752,38 @@ async def refresh_ufc_stats():
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Ошибка при обновлении данных: {str(e)}")
+
+# Обслуживание статических файлов фронтенда (для Railway)
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+import os
+
+# Проверяем существует ли папка frontend/dist
+frontend_dist_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "frontend", "dist")
+
+if os.path.exists(frontend_dist_path):
+    # Обслуживание статических файлов
+    app.mount("/static", StaticFiles(directory=frontend_dist_path), name="static")
+    
+    # Обслуживание главной страницы
+    @app.get("/")
+    async def serve_frontend():
+        return FileResponse(os.path.join(frontend_dist_path, "index.html"))
+    
+    # Обслуживание всех остальных маршрутов фронтенда
+    @app.get("/{full_path:path}")
+    async def serve_frontend_routes(full_path: str):
+        # Если это API запрос, пропускаем
+        if full_path.startswith("api/"):
+            raise HTTPException(status_code=404, detail="API endpoint not found")
+        
+        # Проверяем существует ли файл
+        file_path = os.path.join(frontend_dist_path, full_path)
+        if os.path.exists(file_path) and os.path.isfile(file_path):
+            return FileResponse(file_path)
+        
+        # Иначе возвращаем index.html для SPA
+        return FileResponse(os.path.join(frontend_dist_path, "index.html"))
 
 if __name__ == "__main__":
     import uvicorn

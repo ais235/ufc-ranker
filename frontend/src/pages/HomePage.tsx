@@ -1,179 +1,167 @@
 import React, { useState, useEffect } from 'react'
-import WeightClassTabs from '../components/WeightClassTabs'
-import FighterCard from '../components/FighterCard'
+import { Link } from 'react-router-dom'
+import Layout from '../components/Layout'
 import { api } from '../services/api'
-import { WeightClass, Fighter, Ranking } from '../types'
 
 const HomePage: React.FC = () => {
-  const [weightClasses, setWeightClasses] = useState<WeightClass[]>([])
-  const [activeClassId, setActiveClassId] = useState<number | null>(null)
-  const [rankings, setRankings] = useState<Ranking[]>([])
+  const [stats, setStats] = useState<any>(null)
   const [loading, setLoading] = useState(true)
-  const [compareList, setCompareList] = useState<Fighter[]>([])
 
   useEffect(() => {
-    loadWeightClasses()
+    loadStats()
   }, [])
 
-  useEffect(() => {
-    if (activeClassId) {
-      loadRankings(activeClassId)
-    }
-  }, [activeClassId])
-
-  const loadWeightClasses = async () => {
+  const loadStats = async () => {
     try {
-      const classes = await api.getWeightClasses()
-      setWeightClasses(classes)
-      if (classes.length > 0) {
-        setActiveClassId(classes[0].id)
-      }
+      const statsData = await api.getStats()
+      setStats(statsData)
     } catch (error) {
-      console.error('Ошибка загрузки категорий:', error)
+      console.error('Ошибка загрузки статистики:', error)
     } finally {
       setLoading(false)
     }
   }
 
-  const loadRankings = async (classId: number) => {
-    try {
-      setLoading(true)
-      const rankings = await api.getRankings(classId)
-      setRankings(rankings)
-    } catch (error) {
-      console.error('Ошибка загрузки рейтингов:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const handleAddToCompare = (fighter: Fighter) => {
-    if (compareList.length >= 2) {
-      alert('Можно сравнить максимум 2 бойцов')
-      return
-    }
-    
-    if (compareList.find(f => f.id === fighter.id)) {
-      alert('Боец уже добавлен в сравнение')
-      return
-    }
-    
-    setCompareList([...compareList, fighter])
-  }
-
-  const handleRemoveFromCompare = (fighterId: number) => {
-    setCompareList(compareList.filter(f => f.id !== fighterId))
-  }
-
-  if (loading && weightClasses.length === 0) {
+  if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-ufc-blue mx-auto mb-4"></div>
-          <p className="text-gray-600">Загрузка...</p>
+      <Layout>
+        <div className="flex items-center justify-center min-h-96">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-yellow-400 mx-auto"></div>
+            <p className="mt-4 text-white text-xl">Загрузка...</p>
+          </div>
         </div>
-      </div>
+      </Layout>
     )
   }
 
   return (
-    <div className="space-y-8">
-      {/* Заголовок */}
-      <div className="text-center">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">
-          UFC Рейтинги
+    <Layout>
+      {/* Hero секция */}
+      <div className="card text-center mb-8">
+        <h1 className="text-4xl md:text-6xl font-bold mb-6 text-yellow-400">
+          🥊 UFC Ranker
         </h1>
-        <p className="text-lg text-gray-600">
-          Актуальные рейтинги бойцов UFC по весовым категориям
+        <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto">
+          Полная база данных UFC с рейтингами бойцов, статистикой боев и предстоящими событиями
         </p>
+        
+        <div className="flex flex-col sm:flex-row justify-center gap-4">
+          <Link to="/rankings" className="btn-primary">
+            🥊 Рейтинги бойцов
+          </Link>
+          <Link to="/events" className="btn-secondary">
+            📅 События UFC
+          </Link>
+          <Link to="/fighters" className="btn-secondary">
+            👊 База бойцов
+          </Link>
+        </div>
       </div>
 
-      {/* Список сравнения */}
-      {compareList.length > 0 && (
-        <div className="bg-ufc-blue text-white p-4 rounded-lg">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="font-semibold mb-2">Сравнение бойцов ({compareList.length}/2)</h3>
-              <div className="flex space-x-4">
-                {compareList.map(fighter => (
-                  <div key={fighter.id} className="flex items-center space-x-2">
-                    <span className="text-sm">{fighter.name_ru}</span>
-                    <button
-                      onClick={() => handleRemoveFromCompare(fighter.id)}
-                      className="text-white hover:text-gray-300"
-                    >
-                      ×
-                    </button>
-                  </div>
-                ))}
+      {/* Статистика */}
+      {stats && (
+        <div className="card mb-8">
+          <h2 className="section-title">📊 Статистика UFC</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="text-center">
+              <div className="text-3xl font-bold text-yellow-400 mb-2">
+                {stats.total_fighters}
               </div>
+              <div className="text-gray-300">Бойцов</div>
             </div>
-            {compareList.length === 2 && (
-              <button
-                onClick={() => window.location.href = '/compare'}
-                className="btn btn-secondary"
-              >
-                Сравнить
-              </button>
-            )}
+            <div className="text-center">
+              <div className="text-3xl font-bold text-yellow-400 mb-2">
+                {stats.total_events}
+              </div>
+              <div className="text-gray-300">Событий</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-yellow-400 mb-2">
+                {stats.total_fights}
+              </div>
+              <div className="text-gray-300">Боев</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-yellow-400 mb-2">
+                {stats.total_weight_classes}
+              </div>
+              <div className="text-gray-300">Весовых категорий</div>
+            </div>
           </div>
         </div>
       )}
 
-      {/* Табы весовых категорий */}
-      <WeightClassTabs
-        weightClasses={weightClasses}
-        activeClassId={activeClassId}
-        onClassChange={setActiveClassId}
-      />
+      {/* Быстрые ссылки */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Рейтинги */}
+        <div className="card">
+          <h3 className="text-2xl font-bold text-yellow-400 mb-4 text-center">
+            🥊 Рейтинги
+          </h3>
+          <p className="text-gray-300 mb-6 text-center">
+            Актуальные рейтинги бойцов по весовым категориям
+          </p>
+          <div className="space-y-3">
+            <Link to="/rankings" className="block w-full btn-secondary text-center">
+              Все рейтинги
+            </Link>
+            <Link to="/rankings/Lightweight" className="block w-full btn-secondary text-center">
+              Легкий вес
+            </Link>
+            <Link to="/rankings/Welterweight" className="block w-full btn-secondary text-center">
+              Полусредний вес
+            </Link>
+            <Link to="/rankings/Middleweight" className="block w-full btn-secondary text-center">
+              Средний вес
+            </Link>
+          </div>
+        </div>
 
-      {/* Рейтинги */}
-      {loading ? (
-        <div className="flex items-center justify-center h-32">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-ufc-blue"></div>
+        {/* События */}
+        <div className="card">
+          <h3 className="text-2xl font-bold text-yellow-400 mb-4 text-center">
+            📅 События
+          </h3>
+          <p className="text-gray-300 mb-6 text-center">
+            Предстоящие и прошедшие события UFC
+          </p>
+          <div className="space-y-3">
+            <Link to="/events" className="block w-full btn-secondary text-center">
+              Все события
+            </Link>
+            <Link to="/events?upcoming=true" className="block w-full btn-secondary text-center">
+              Предстоящие
+            </Link>
+            <Link to="/events?past=true" className="block w-full btn-secondary text-center">
+              Прошедшие
+            </Link>
+          </div>
         </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {rankings.map((ranking, index) => (
-            <FighterCard
-              key={ranking.fighter.id}
-              fighter={ranking.fighter}
-              rank={ranking.is_champion ? 'Ч' : ranking.rank_position}
-              isChampion={ranking.is_champion}
-              onAddToCompare={handleAddToCompare}
-              showCompareButton={compareList.length < 2}
-            />
-          ))}
-        </div>
-      )}
 
-      {!loading && rankings.length === 0 && (
-        <div className="text-center py-12">
-          <p className="text-gray-500 text-lg">Рейтинги не найдены</p>
+        {/* Бойцы */}
+        <div className="card">
+          <h3 className="text-2xl font-bold text-yellow-400 mb-4 text-center">
+            👊 Бойцы
+          </h3>
+          <p className="text-gray-300 mb-6 text-center">
+            Полная база данных бойцов UFC
+          </p>
+          <div className="space-y-3">
+            <Link to="/fighters" className="block w-full btn-secondary text-center">
+              Все бойцы
+            </Link>
+            <Link to="/fighters?search=champion" className="block w-full btn-secondary text-center">
+              Чемпионы
+            </Link>
+            <Link to="/fighters?search=top" className="block w-full btn-secondary text-center">
+              Топ бойцы
+            </Link>
+          </div>
         </div>
-      )}
-    </div>
+      </div>
+    </Layout>
   )
 }
 
 export default HomePage
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

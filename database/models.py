@@ -25,9 +25,7 @@ class WeightClass(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     
-    # Связи
-    rankings = relationship("Ranking", back_populates="weight_class")
-    upcoming_fights = relationship("UpcomingFight", back_populates="weight_class")
+    # Связи (удалена связь с rankings, так как используется текстовое поле)
 
 
 class Fighter(Base):
@@ -48,15 +46,19 @@ class Fighter(Base):
     age = Column(Integer)
     birth_date = Column(Date)
     weight_class = Column(String(100))  # Весовая категория (Женский легчайший вес, Полутяжёлый вес и т.д.)
-    win = Column(Integer, default=0)    # Количество побед
-    draw = Column(Integer, default=0)   # Количество ничьих
-    lose = Column(Integer, default=0)   # Количество поражений
+    wins = Column(Integer, default=0)    # Количество побед
+    draws = Column(Integer, default=0)   # Количество ничьих
+    losses = Column(Integer, default=0)   # Количество поражений
+    no_contests = Column(Integer, default=0)  # Количество несостоявшихся боев
+    ufc_wins = Column(Integer, default=0)     # Победы в UFC
+    ufc_losses = Column(Integer, default=0)   # Поражения в UFC
+    ufc_draws = Column(Integer, default=0)    # Ничьи в UFC
+    ufc_no_contests = Column(Integer, default=0)  # Несостоявшиеся бои в UFC
     career = Column(String(100))        # Бойцовская организация (UFC, Bellator и т.д.)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     
     # Новые поля из личных страниц Wikipedia
-    full_name = Column(String(200))     # Полное имя бойца
     birth_place = Column(String(200))   # Место рождения
     stance = Column(String(50))         # Боевая стойка
     team = Column(String(200))          # Тренировочная команда/клуб
@@ -64,9 +66,10 @@ class Fighter(Base):
     belt_rank = Column(String(100))     # Ранг в BJJ
     years_active = Column(String(50))   # Годы активности в ММА
     current_division = Column(String(100))  # Текущий дивизион
+    fighting_out_of = Column(String(200))   # Тренируется в (город, страна)
     
     # Связи
-    rankings = relationship("Ranking", back_populates="fighter")
+    # rankings = relationship("Ranking", back_populates="fighter")  # Удалено из-за проблем с БД
     fight_record = relationship("FightRecord", back_populates="fighter", uselist=False)
     upcoming_fights_fighter1 = relationship("UpcomingFight", foreign_keys="UpcomingFight.fighter1_id", back_populates="fighter1")
     upcoming_fights_fighter2 = relationship("UpcomingFight", foreign_keys="UpcomingFight.fighter2_id", back_populates="fighter2")
@@ -78,7 +81,7 @@ class Ranking(Base):
     
     id = Column(Integer, primary_key=True)
     fighter_id = Column(Integer, ForeignKey('fighters.id'), nullable=False)
-    weight_class_id = Column(Integer, ForeignKey('weight_classes.id'), nullable=False)
+    weight_class = Column(String(50), nullable=False)  # Название весовой категории (текст)
     rank_position = Column(Integer)  # позиция в рейтинге
     is_champion = Column(Boolean, default=False)
     rank_change = Column(Integer, default=0)  # изменение позиции (+1, -1, 0)
@@ -86,8 +89,7 @@ class Ranking(Base):
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     
     # Связи
-    fighter = relationship("Fighter", back_populates="rankings")
-    weight_class = relationship("WeightClass", back_populates="rankings")
+    fighter = relationship("Fighter")  # Убрано back_populates из-за проблем с БД
 
 
 class FightRecord(Base):
@@ -126,7 +128,7 @@ class UpcomingFight(Base):
     id = Column(Integer, primary_key=True)
     fighter1_id = Column(Integer, ForeignKey('fighters.id'), nullable=False)
     fighter2_id = Column(Integer, ForeignKey('fighters.id'), nullable=False)
-    weight_class_id = Column(Integer, ForeignKey('weight_classes.id'), nullable=False)
+    weight_class = Column(String(100))  # Весовая категория как строка
     event_name = Column(String(200))
     event_date = Column(Date)
     location = Column(String(100))
@@ -138,7 +140,6 @@ class UpcomingFight(Base):
     # Связи
     fighter1 = relationship("Fighter", foreign_keys=[fighter1_id], back_populates="upcoming_fights_fighter1")
     fighter2 = relationship("Fighter", foreign_keys=[fighter2_id], back_populates="upcoming_fights_fighter2")
-    weight_class = relationship("WeightClass", back_populates="upcoming_fights")
 
 
 class Event(Base):
@@ -157,8 +158,7 @@ class Event(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     
-    # Связи
-    fights = relationship("Fight", back_populates="event")
+    # Связи (убрана связь с fights, так как в БД нет event_id)
 
 
 class Fight(Base):
@@ -166,25 +166,36 @@ class Fight(Base):
     __tablename__ = "fights"
     
     id = Column(Integer, primary_key=True)
-    event_id = Column(Integer, ForeignKey('events.id'), nullable=False)
-    fighter1_id = Column(Integer, ForeignKey('fighters.id'), nullable=False)
-    fighter2_id = Column(Integer, ForeignKey('fighters.id'), nullable=False)
-    weight_class_id = Column(Integer, ForeignKey('weight_classes.id'), nullable=False)
+    event_name = Column(String(200))  # Название события
+    fighter1_name = Column(String(100))  # Имя первого бойца
+    fighter2_name = Column(String(100))  # Имя второго бойца
+    weight_class = Column(String(100))  # Весовая категория
     scheduled_rounds = Column(Integer, default=3)  # Запланированное количество раундов
-    result = Column(String(50))  # Результат боя (KO, TKO, Decision, etc.)
-    winner_id = Column(Integer, ForeignKey('fighters.id'))  # ID победителя
+    method = Column(String(100))  # Способ победы (KO, TKO, Decision, etc.)
+    method_details = Column(String(200))  # Детали способа победы
+    round = Column(Integer)  # Раунд окончания
+    time = Column(String(20))  # Время окончания
     fight_date = Column(Date)
+    location = Column(String(100))  # Место проведения
+    notes = Column(Text)  # Дополнительные заметки
     is_title_fight = Column(Boolean, default=False)
     is_main_event = Column(Boolean, default=False)
+    is_win = Column(String(50))  # Победа первого бойца
+    is_loss = Column(String(50))  # Поражение первого бойца
+    is_draw = Column(String(50))  # Ничья
+    is_nc = Column(String(50))  # Несостоявшийся бой
+    fighter1_record = Column(String(50))  # Рекорд первого бойца
+    fighter2_record = Column(String(50))  # Рекорд второго бойца
+    fight_time_seconds = Column(Integer)  # Время боя в секундах
+    card_type = Column(String(50))  # Тип карты (Main card, Preliminary card, Early preliminary card)
+    referee = Column(String(100))  # Рефери
+    winner_name = Column(String(100))  # Имя победителя
+    judges_score = Column(String(100))  # Оценка судей (например: 30-27, 30-27, 30-27)
+    fight_order = Column(Integer)  # Порядковый номер боя в карте
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     
     # Связи
-    event = relationship("Event", back_populates="fights")
-    fighter1 = relationship("Fighter", foreign_keys=[fighter1_id])
-    fighter2 = relationship("Fighter", foreign_keys=[fighter2_id])
-    winner = relationship("Fighter", foreign_keys=[winner_id])
-    weight_class = relationship("WeightClass")
     fight_stats = relationship("FightStats", back_populates="fight")
 
 

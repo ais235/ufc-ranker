@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react'
+import { useParams, Link } from 'react-router-dom'
+import Layout from '../components/Layout'
 import { api } from '../services/api'
 import { Fighter, WeightClass } from '../types'
 
 const FightersPage: React.FC = () => {
+  const { fighterName } = useParams<{ fighterName?: string }>()
   const [fighters, setFighters] = useState<Fighter[]>([])
   const [weightClasses, setWeightClasses] = useState<WeightClass[]>([])
   const [selectedWeightClass, setSelectedWeightClass] = useState<number | null>(null)
@@ -16,7 +19,7 @@ const FightersPage: React.FC = () => {
   const loadData = async () => {
     try {
       const [fightersData, weightClassesData] = await Promise.all([
-        api.getFighters({ limit: 100 }),
+        api.getFighters({ limit: 20 }), // Ограничиваем 20 бойцами
         api.getWeightClasses()
       ])
       setFighters(fightersData)
@@ -29,142 +32,151 @@ const FightersPage: React.FC = () => {
   }
 
   const filteredFighters = fighters.filter(fighter => {
-    const searchName = (fighter.name_ru || fighter.name || '').toLowerCase()
-    const searchCountry = (fighter.country || '').toLowerCase()
-    const searchTermLower = searchTerm.toLowerCase()
-    
-    const matchesSearch = searchName.includes(searchTermLower) || searchCountry.includes(searchTermLower)
+    const matchesSearch = fighter.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         fighter.name_ru.toLowerCase().includes(searchTerm.toLowerCase())
     const matchesWeightClass = selectedWeightClass === null || fighter.weight_class_id === selectedWeightClass
     return matchesSearch && matchesWeightClass
   })
 
-  const getWeightClassName = (weightClassId: number) => {
+  const getWeightClassName = (weightClassId: number | undefined) => {
+    if (!weightClassId) return 'Неизвестная категория'
     const weightClass = weightClasses.find(wc => wc.id === weightClassId)
-    return weightClass?.name || 'Неизвестная категория'
+    return weightClass ? (weightClass.name_ru || weightClass.name) : 'Неизвестная категория'
+  }
+
+  const getFighterUrl = (fighter: Fighter) => {
+    const name = fighter.name.replace(/\s+/g, '_')
+    return `/fighters/${name}`
   }
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Загрузка бойцов...</p>
+      <Layout>
+        <div className="flex items-center justify-center min-h-96">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-yellow-400 mx-auto"></div>
+            <p className="mt-4 text-white text-xl">Загрузка бойцов...</p>
+          </div>
         </div>
-      </div>
+      </Layout>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8 text-center">
-          👊 Бойцы UFC
-        </h1>
+    <Layout>
+      {/* Заголовок */}
+      <div className="card text-center mb-8">
+        <h1 className="section-title">👊 База бойцов UFC</h1>
+        <p className="text-gray-300 text-lg">
+          Полная база данных бойцов UFC с детальной информацией
+        </p>
+      </div>
 
-        {/* Фильтры */}
-        <div className="mb-8 bg-white rounded-lg shadow-lg p-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Поиск */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Поиск по имени или стране:
-              </label>
-              <input
-                type="text"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Введите имя бойца или страну..."
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-            </div>
+      {/* Фильтры */}
+      <div className="card mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Поиск */}
+          <div>
+            <label className="block text-yellow-400 font-semibold mb-2">
+              Поиск бойца
+            </label>
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Введите имя бойца..."
+              className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-yellow-400 focus:outline-none"
+            />
+          </div>
 
-            {/* Весовая категория */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Весовая категория:
-              </label>
-              <select
-                value={selectedWeightClass || ''}
-                onChange={(e) => setSelectedWeightClass(e.target.value ? Number(e.target.value) : null)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                <option value="">Все категории</option>
-                {weightClasses.map(weightClass => (
-                  <option key={weightClass.id} value={weightClass.id}>
-                    {weightClass.name}
-                  </option>
-                ))}
-              </select>
-            </div>
+          {/* Весовая категория */}
+          <div>
+            <label className="block text-yellow-400 font-semibold mb-2">
+              Весовая категория
+            </label>
+            <select
+              value={selectedWeightClass || ''}
+              onChange={(e) => setSelectedWeightClass(e.target.value ? parseInt(e.target.value) : null)}
+              className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-yellow-400 focus:outline-none"
+            >
+              <option value="">Все категории</option>
+              {weightClasses.map(weightClass => (
+                <option key={weightClass.id} value={weightClass.id}>
+                  {weightClass.name_ru || weightClass.name}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
+      </div>
 
-        {/* Список бойцов */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      {/* Список бойцов */}
+      <div className="card">
+        <h2 className="text-2xl font-bold text-yellow-400 mb-6 text-center">
+          Бойцы UFC ({filteredFighters.length})
+        </h2>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredFighters.map((fighter) => (
             <div
               key={fighter.id}
-              className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
+              className="bg-gray-800 bg-opacity-50 rounded-lg p-6 border border-gray-700 hover:bg-opacity-70 transition-all"
             >
               {/* Фото бойца */}
-              <div className="h-48 bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-                {fighter.image_url ? (
-                  <img
-                    src={fighter.image_url}
-                    alt={fighter.name}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="text-white text-6xl">🥊</div>
-                )}
+              <div className="w-full h-48 bg-gradient-to-br from-gray-700 to-gray-800 rounded-lg mb-4 flex items-center justify-center">
+                <div className="text-center">
+                  <div className="text-6xl mb-2">👊</div>
+                  <p className="text-gray-300 text-sm">Фото бойца</p>
+                </div>
               </div>
 
               {/* Информация о бойце */}
-              <div className="p-4">
-                <h3 className="font-bold text-xl text-gray-900 mb-2">
+              <div className="text-center">
+                <h3 className="text-xl font-bold text-white mb-2">
                   {fighter.name_ru || fighter.name}
                 </h3>
-                {fighter.name_en && fighter.name_en !== fighter.name_ru && (
-                  <div className="text-sm text-gray-500 mb-1">{fighter.name_en}</div>
-                )}
                 
-                <div className="space-y-2 text-sm text-gray-600">
-                  <div className="flex items-center">
-                    <span className="font-medium">Страна:</span>
-                    <span className="ml-2">{fighter.country || 'Не указана'}</span>
+                {fighter.nickname && (
+                  <p className="text-yellow-400 font-medium mb-2">
+                    "{fighter.nickname}"
+                  </p>
+                )}
+
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-gray-400">Страна:</span>
+                    <span className="text-white">{fighter.country || 'Не указана'}</span>
                   </div>
                   
-                  <div className="flex items-center">
-                    <span className="font-medium">Категория:</span>
-                    <span className="ml-2">{getWeightClassName(fighter.weight_class_id)}</span>
+                  <div className="flex justify-between">
+                    <span className="text-gray-400">Категория:</span>
+                    <span className="text-white">{getWeightClassName(fighter.weight_class_id)}</span>
                   </div>
                   
-                  <div className="flex items-center">
-                    <span className="font-medium">Рекорд:</span>
-                    <span className="ml-2 font-bold text-blue-600">
+                  <div className="flex justify-between">
+                    <span className="text-gray-400">Рост:</span>
+                    <span className="text-white">{fighter.height ? `${fighter.height} см` : 'Не указан'}</span>
+                  </div>
+                  
+                  <div className="flex justify-between">
+                    <span className="text-gray-400">Размах рук:</span>
+                    <span className="text-white">{fighter.reach ? `${fighter.reach} см` : 'Не указан'}</span>
+                  </div>
+                  
+                  <div className="flex justify-between">
+                    <span className="text-gray-400">Рекорд:</span>
+                    <span className="text-white font-bold">
                       {fighter.wins}-{fighter.losses}-{fighter.draws}
                     </span>
                   </div>
-                  
-                  {fighter.height && (
-                    <div className="flex items-center">
-                      <span className="font-medium">Рост:</span>
-                      <span className="ml-2">{fighter.height} см</span>
-                    </div>
-                  )}
-                  
-                  {fighter.reach && (
-                    <div className="flex items-center">
-                      <span className="font-medium">Размах рук:</span>
-                      <span className="ml-2">{fighter.reach} см</span>
-                    </div>
-                  )}
                 </div>
 
-                {/* Кнопка подробнее */}
-                <button className="w-full mt-4 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">
+                <Link
+                  to={getFighterUrl(fighter)}
+                  className="mt-4 inline-block w-full btn-primary text-center"
+                >
                   Подробнее
-                </button>
+                </Link>
               </div>
             </div>
           ))}
@@ -172,17 +184,12 @@ const FightersPage: React.FC = () => {
 
         {filteredFighters.length === 0 && (
           <div className="text-center py-12">
-            <div className="text-6xl mb-4">🔍</div>
-            <h3 className="text-xl font-semibold text-gray-600 mb-2">
-              Бойцы не найдены
-            </h3>
-            <p className="text-gray-500">
-              Попробуйте изменить параметры поиска
-            </p>
+            <div className="text-6xl mb-4">👊</div>
+            <p className="text-gray-300 text-xl">Бойцы не найдены</p>
           </div>
         )}
       </div>
-    </div>
+    </Layout>
   )
 }
 

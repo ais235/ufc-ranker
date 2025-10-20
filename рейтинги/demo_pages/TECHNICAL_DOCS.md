@@ -278,3 +278,10 @@ open рейтинги/demo_pages/weight_class_rankings_demo.html
 - Сжатие CSS/HTML
 - Минификация ресурсов
 - CDN для статических файлов
+
+
+
+
+
+
+

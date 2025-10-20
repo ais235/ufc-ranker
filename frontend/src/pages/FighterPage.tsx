@@ -1,288 +1,275 @@
 import React, { useState, useEffect } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
+import Layout from '../components/Layout'
 import { api } from '../services/api'
-import { FighterDetail, Fight, FightStats, FighterStatsSummary } from '../types'
+import { Fighter, Fight, WeightClass } from '../types'
 
 const FighterPage: React.FC = () => {
-  const { id } = useParams<{ id: string }>()
-  const navigate = useNavigate()
-  const [fighter, setFighter] = useState<FighterDetail | null>(null)
+  const { fighterName } = useParams<{ fighterName: string }>()
+  const [fighter, setFighter] = useState<Fighter | null>(null)
   const [fights, setFights] = useState<Fight[]>([])
-  const [stats, setStats] = useState<FighterStatsSummary | null>(null)
+  const [weightClass, setWeightClass] = useState<WeightClass | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    if (id) {
-      loadFighterData(parseInt(id))
+    if (fighterName) {
+      loadFighterData(fighterName)
     }
-  }, [id])
+  }, [fighterName])
 
-  const loadFighterData = async (fighterId: number) => {
+  const loadFighterData = async (fighterIdentifier: string) => {
     try {
       setLoading(true)
       setError(null)
-      
-      const [fighterData, fightsData, statsData] = await Promise.all([
-        api.getFighter(fighterId),
-        api.getFighterFights(fighterId, 10),
-        api.getFighterStats(fighterId)
-      ])
-      
-      setFighter(fighterData)
-      setFights(fightsData)
-      setStats(statsData)
-    } catch (err) {
-      console.error('Ошибка загрузки данных бойца:', err)
-      setError('Не удалось загрузить данные бойца')
+
+      // Загружаем всех бойцов и ищем нужного
+      const fighters = await api.getFighters({ limit: 1000 })
+      const foundFighter = fighters.find(f => 
+        f.name.toLowerCase().replace(/\s+/g, '_') === fighterIdentifier.toLowerCase()
+      )
+
+      if (!foundFighter) {
+        setError('Боец не найден')
+        return
+      }
+
+      setFighter(foundFighter)
+
+      // Загружаем бои бойца
+      const fighterFights = await api.getFights({ fighter_id: foundFighter.id })
+      setFights(fighterFights)
+
+      // Загружаем весовую категорию
+      if (foundFighter.weight_class_id) {
+        const weightClasses = await api.getWeightClasses()
+        const foundWeightClass = weightClasses.find(wc => wc.id === foundFighter.weight_class_id)
+        setWeightClass(foundWeightClass || null)
+      }
+
+    } catch (error) {
+      console.error('Ошибка загрузки бойца:', error)
+      setError('Ошибка загрузки данных бойца')
     } finally {
       setLoading(false)
     }
   }
 
-  const formatDate = (dateString?: string) => {
-    if (!dateString) return 'Не указана'
-    return new Date(dateString).toLocaleDateString('ru-RU')
+  const getRecentFights = () => {
+    return fights.slice(0, 5) // Последние 5 боев
   }
 
-  const getResultColor = (result?: string) => {
-    if (!result) return 'text-gray-500'
-    if (result.toLowerCase().includes('ko') || result.toLowerCase().includes('tko')) {
-      return 'text-red-600 font-bold'
+  const getFightResult = (fight: Fight) => {
+    // Определяем результат для нашего бойца
+    if (fight.fighter1_name === fighter?.name) {
+      if (fight.is_win === '1') return { result: 'Победа', color: 'text-green-400' }
+      if (fight.is_loss === '1') return { result: 'Поражение', color: 'text-red-400' }
+      if (fight.is_draw === '1') return { result: 'Ничья', color: 'text-yellow-400' }
+      if (fight.is_nc === '1') return { result: 'Не состоялся', color: 'text-gray-400' }
+    } else if (fight.fighter2_name === fighter?.name) {
+      if (fight.is_win === '1') return { result: 'Поражение', color: 'text-red-400' }
+      if (fight.is_loss === '1') return { result: 'Победа', color: 'text-green-400' }
+      if (fight.is_draw === '1') return { result: 'Ничья', color: 'text-yellow-400' }
+      if (fight.is_nc === '1') return { result: 'Не состоялся', color: 'text-gray-400' }
     }
-    if (result.toLowerCase().includes('submission')) {
-      return 'text-purple-600 font-bold'
-    }
-    if (result.toLowerCase().includes('decision')) {
-      return 'text-blue-600 font-bold'
-    }
-    return 'text-gray-600'
+    return { result: 'Неизвестно', color: 'text-gray-400' }
   }
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Загрузка данных бойца...</p>
+      <Layout>
+        <div className="flex items-center justify-center min-h-96">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-yellow-400 mx-auto"></div>
+            <p className="mt-4 text-white text-xl">Загрузка бойца...</p>
+          </div>
         </div>
-      </div>
+      </Layout>
     )
   }
 
-  if (error || !fighter) {
+  if (error) {
     return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <div className="text-center">
-          <div className="text-6xl mb-4">😞</div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">
-            {error || 'Боец не найден'}
-          </h2>
-          <button
-            onClick={() => navigate('/fighters')}
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            Вернуться к списку бойцов
-          </button>
+      <Layout>
+        <div className="flex items-center justify-center min-h-96">
+          <div className="text-center">
+            <h1 className="text-4xl font-bold text-white mb-4">Ошибка</h1>
+            <p className="text-gray-300 text-xl">{error}</p>
+            <Link to="/fighters" className="mt-4 btn-primary inline-block">
+              Вернуться к бойцам
+            </Link>
+          </div>
         </div>
-      </div>
+      </Layout>
+    )
+  }
+
+  if (!fighter) {
+    return (
+      <Layout>
+        <div className="flex items-center justify-center min-h-96">
+          <div className="text-center">
+            <h1 className="text-4xl font-bold text-white mb-4">Боец не найден</h1>
+            <Link to="/fighters" className="mt-4 btn-primary inline-block">
+              Вернуться к бойцам
+            </Link>
+          </div>
+        </div>
+      </Layout>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <div className="container mx-auto px-4 py-8">
-        {/* Кнопка назад */}
-        <button
-          onClick={() => navigate('/fighters')}
-          className="mb-6 flex items-center text-blue-600 hover:text-blue-800 transition-colors"
-        >
-          <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-          </svg>
-          Назад к списку бойцов
-        </button>
+    <Layout>
+      {/* Основная карточка бойца */}
+      <div className="card mb-8 relative">
+        {/* Флаг страны */}
+        <div className="absolute top-6 right-6">
+          <div className="bg-gray-800 bg-opacity-50 p-4 rounded-lg border border-gray-700">
+            <div className="w-10 h-8 bg-gradient-to-br from-gray-700 to-gray-800 rounded flex items-center justify-center mb-2">
+              <span className="text-lg">🏳️</span>
+            </div>
+            <p className="text-gray-300 text-sm">{fighter.country || 'Не указана'}</p>
+          </div>
+        </div>
 
-        {/* Основная информация о бойце */}
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden mb-8">
-          <div className="md:flex">
-            {/* Фото бойца */}
-            <div className="md:w-1/3">
-              <div className="h-96 md:h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-                {fighter.image_url ? (
-                  <img
-                    src={fighter.image_url}
-                    alt={fighter.name_ru}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="text-white text-8xl">🥊</div>
-                )}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Фото бойца */}
+          <div className="md:col-span-1">
+            <div className="w-full h-80 bg-gradient-to-br from-gray-700 to-gray-800 rounded-lg flex items-center justify-center">
+              <div className="text-center">
+                <div className="text-6xl mb-4">👊</div>
+                <p className="text-gray-300">Фото бойца</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Информация о бойце */}
+          <div className="md:col-span-2">
+            <h1 className="text-4xl font-bold text-white mb-2">
+              {fighter.name_ru || fighter.name}
+            </h1>
+            
+            {fighter.nickname && (
+              <p className="text-yellow-400 text-xl mb-6">
+                "{fighter.nickname}"
+              </p>
+            )}
+
+            <div className="grid grid-cols-2 gap-6 mb-6">
+              <div>
+                <span className="text-gray-400">Страна:</span>
+                <p className="text-white font-medium">{fighter.country || 'Не указана'}</p>
+              </div>
+              <div>
+                <span className="text-gray-400">Возраст:</span>
+                <p className="text-white font-medium">{fighter.age ? `${fighter.age} лет` : 'Не указан'}</p>
+              </div>
+              <div>
+                <span className="text-gray-400">Рост:</span>
+                <p className="text-white font-medium">{fighter.height ? `${fighter.height} см` : 'Не указан'}</p>
+              </div>
+              <div>
+                <span className="text-gray-400">Размах рук:</span>
+                <p className="text-white font-medium">{fighter.reach ? `${fighter.reach} см` : 'Не указан'}</p>
+              </div>
+              <div>
+                <span className="text-gray-400">Вес:</span>
+                <p className="text-white font-medium">{fighter.weight ? `${fighter.weight} кг` : 'Не указан'}</p>
+              </div>
+              <div>
+                <span className="text-gray-400">Категория:</span>
+                <p className="text-white font-medium">
+                  {weightClass ? (weightClass.name_ru || weightClass.name) : 'Не указана'}
+                </p>
               </div>
             </div>
 
-            {/* Информация */}
-            <div className="md:w-2/3 p-8">
-              <div className="flex items-start justify-between mb-6">
+            {/* Рекорд */}
+            <div className="bg-gray-800 bg-opacity-50 p-6 rounded-lg mb-6">
+              <h3 className="text-xl font-bold text-yellow-400 mb-4">Боевой рекорд</h3>
+              <div className="grid grid-cols-4 gap-4 text-center">
                 <div>
-                  <h1 className="text-4xl font-bold text-gray-900 mb-2">
-                    {fighter.name_ru}
-                  </h1>
-                  {fighter.name_en && fighter.name_en !== fighter.name_ru && (
-                    <p className="text-xl text-gray-600 mb-2">{fighter.name_en}</p>
-                  )}
-                  {fighter.nickname && (
-                    <p className="text-lg text-blue-600 font-semibold">"{fighter.nickname}"</p>
-                  )}
+                  <div className="text-3xl font-bold text-green-400">{fighter.wins}</div>
+                  <div className="text-gray-400">Побед</div>
                 </div>
-                
-                {fighter.country_flag_url && (
-                  <img
-                    src={fighter.country_flag_url}
-                    alt={fighter.country}
-                    className="w-12 h-8 object-cover rounded"
-                  />
-                )}
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-3">Основная информация</h3>
-                  <div className="space-y-2">
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Страна:</span>
-                      <span className="font-medium">{fighter.country || 'Не указана'}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Возраст:</span>
-                      <span className="font-medium">{fighter.age ? `${fighter.age} лет` : 'Не указан'}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Рост:</span>
-                      <span className="font-medium">{fighter.height ? `${fighter.height} см` : 'Не указан'}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Вес:</span>
-                      <span className="font-medium">{fighter.weight ? `${fighter.weight} кг` : 'Не указан'}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Размах рук:</span>
-                      <span className="font-medium">{fighter.reach ? `${fighter.reach} см` : 'Не указан'}</span>
-                    </div>
-                  </div>
+                  <div className="text-3xl font-bold text-red-400">{fighter.losses}</div>
+                  <div className="text-gray-400">Поражений</div>
                 </div>
-
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-3">Боевой рекорд</h3>
-                  <div className="space-y-2">
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Победы:</span>
-                      <span className="font-bold text-green-600">{fighter.wins}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Поражения:</span>
-                      <span className="font-bold text-red-600">{fighter.losses}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Ничьи:</span>
-                      <span className="font-bold text-yellow-600">{fighter.draws}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Всего боев:</span>
-                      <span className="font-bold text-blue-600">{fighter.wins + fighter.losses + fighter.draws}</span>
-                    </div>
-                    {fighter.fight_record && (
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">% побед:</span>
-                        <span className="font-bold text-blue-600">{fighter.fight_record.win_percentage}%</span>
-                      </div>
-                    )}
-                  </div>
+                  <div className="text-3xl font-bold text-yellow-400">{fighter.draws}</div>
+                  <div className="text-gray-400">Ничьих</div>
+                </div>
+                <div>
+                  <div className="text-3xl font-bold text-white">{fighter.wins + fighter.losses + fighter.draws}</div>
+                  <div className="text-gray-400">Всего боев</div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Статистика боев */}
-        {stats && (
-          <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">📊 Статистика боев</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-              <div className="text-center">
-                <div className="text-3xl font-bold text-blue-600">{stats.total_fights}</div>
-                <div className="text-gray-600">Всего боев</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-green-600">{stats.average_significant_strikes_rate.toFixed(1)}%</div>
-                <div className="text-gray-600">Точность ударов</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-purple-600">{stats.average_takedown_rate.toFixed(1)}%</div>
-                <div className="text-gray-600">Тейкдауны</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-red-600">{stats.total_knockdowns}</div>
-                <div className="text-gray-600">Нокдауны</div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* История боев */}
-        <div className="bg-white rounded-lg shadow-lg p-6">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">🥊 История боев</h2>
-          {fights.length > 0 ? (
-            <div className="space-y-4">
-              {fights.map((fight) => (
-                <div key={fight.id} className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors">
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center space-x-4">
-                      <div className="text-sm text-gray-500">
-                        {formatDate(fight.fight_date)}
+      {/* Последние бои */}
+      {fights.length > 0 && (
+        <div className="card">
+          <h2 className="text-2xl font-bold text-yellow-400 mb-6 border-b-2 border-yellow-400 pb-3">
+            Последние бои
+          </h2>
+          
+          <div className="space-y-4">
+            {getRecentFights().map((fight) => {
+              const fightResult = getFightResult(fight)
+              const opponent = fight.fighter1_name === fighter.name ? fight.fighter2_name : fight.fighter1_name
+              
+              return (
+                <div key={fight.id} className="bg-gray-800 bg-opacity-50 rounded-lg p-6 border border-gray-700">
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <h3 className="text-xl font-bold text-white mb-2">
+                        vs {opponent}
+                      </h3>
+                      <p className="text-gray-300">{fight.weight_class}</p>
+                      <p className="text-gray-400 text-sm">
+                        {fight.fight_date ? new Date(fight.fight_date).toLocaleDateString('ru-RU') : 'Дата неизвестна'}
+                      </p>
+                    </div>
+                    
+                    <div className="text-right">
+                      <div className={`text-2xl font-bold ${fightResult.color}`}>
+                        {fightResult.result}
                       </div>
-                      {fight.is_title_fight && (
-                        <span className="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full">
-                          🏆 Титульный бой
-                        </span>
+                      {fight.method && (
+                        <p className="text-gray-300 text-sm">{fight.method}</p>
                       )}
-                      {fight.is_main_event && (
-                        <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
-                          ⭐ Главный бой
-                        </span>
+                      {fight.round && (
+                        <p className="text-gray-400 text-xs">Раунд {fight.round}</p>
                       )}
-                    </div>
-                    <div className={`text-sm font-semibold ${getResultColor(fight.result)}`}>
-                      {fight.result || 'Результат неизвестен'}
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-4">
-                      <div className="text-lg font-semibold">
-                        {fight.fighter1.name_ru}
-                      </div>
-                      <div className="text-gray-400">vs</div>
-                      <div className="text-lg font-semibold">
-                        {fight.fighter2.name_ru}
-                      </div>
-                    </div>
-                    <div className="text-sm text-gray-500">
-                      {fight.event.name}
                     </div>
                   </div>
                 </div>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-8">
-              <div className="text-4xl mb-4">🥊</div>
-              <p className="text-gray-500">История боев не найдена</p>
+              )
+            })}
+          </div>
+
+          {fights.length > 5 && (
+            <div className="text-center mt-6">
+              <p className="text-gray-400">
+                Показаны последние 5 боев из {fights.length} общих
+              </p>
             </div>
           )}
         </div>
-      </div>
-    </div>
+      )}
+
+      {fights.length === 0 && (
+        <div className="card text-center">
+          <div className="text-6xl mb-4">🥊</div>
+          <p className="text-gray-300 text-xl">Информация о боях не найдена</p>
+        </div>
+      )}
+    </Layout>
   )
 }
 

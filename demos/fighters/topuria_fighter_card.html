@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Карточка бойца - Ilia Topuria</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #fff;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* Шапка сайта */
+        .site-header {
+            background: linear-gradient(135deg, #d4af37 0%, #ffd700 100%);
+            color: #000;
+            padding: 15px 30px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+        }
+        .site-header h1 {
+            margin: 0;
+            font-size: 2em;
+            font-weight: bold;
+        }
+        
+        /* Основная карточка бойца */
+        .fighter-main-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 30px;
+            position: relative;
+        }
+        
+        /* Фото бойца */
+        .fighter-photo-section {
+            text-align: center;
+        }
+        .fighter-photo {
+            width: 100%;
+            max-width: 250px;
+            height: 350px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        .photo-placeholder {
+            width: 100%;
+            max-width: 250px;
+            height: 350px;
+            background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%);
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            color: #bdc3c7;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        
+        /* Правый верхний угол с флагом */
+        .country-info {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .country-flag {
+            width: 40px;
+            height: 30px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        .flag-placeholder {
+            width: 40px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .country-name {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #ffd700;
+            margin-bottom: 5px;
+        }
+        .birth-place {
+            font-size: 0.9em;
+            color: #bdc3c7;
+        }
+        
+        /* Информация о бойце */
+        .fighter-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 15px;
+        }
+        .info-section {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+        }
+        .fighter-name {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #d4af37;
+            margin-bottom: 10px;
+            grid-column: 1 / -1;
+        }
+        .fighter-nickname {
+            font-size: 1.3em;
+            font-style: italic;
+            color: #bdc3c7;
+            margin-bottom: 5px;
+            grid-column: 1 / -1;
+        }
+        .fighter-rank {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #d4af37;
+            margin-top: 15px;
+            text-align: center;
+            background: rgba(212, 175, 55, 0.1);
+            padding: 5px 10px;
+            border-radius: 5px;
+            border: 1px solid #d4af37;
+        }
+        .info-label {
+            font-size: 0.9em;
+            color: #bdc3c7;
+            margin-bottom: 5px;
+        }
+        .info-value {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #ffd700;
+            margin-bottom: 15px;
+        }
+        
+        /* Статистика побед/поражений */
+        .stats-section {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .stats-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #d4af37;
+            text-align: center;
+            border-bottom: 1px solid #d4af37;
+            padding-bottom: 5px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #ffd700;
+            margin-bottom: 8px;
+        }
+        .stat-label {
+            font-size: 0.9em;
+            color: #bdc3c7;
+            margin-bottom: 10px;
+        }
+        .stat-breakdown {
+            font-size: 0.9em;
+            color: #95a5a6;
+        }
+        
+        /* Подсветка побед и поражений */
+        .stat-card.wins {
+            border: 2px solid #27ae60;
+            background: rgba(39, 174, 96, 0.1);
+        }
+        .stat-card.losses {
+            border: 2px solid #e74c3c;
+            background: rgba(231, 76, 60, 0.1);
+        }
+        .stat-card.draws {
+            border: 2px solid #f39c12;
+            background: rgba(243, 156, 18, 0.1);
+        }
+        
+        /* Стили для возраста */
+        .age-large {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #ffd700;
+            margin-bottom: 5px;
+        }
+        .birth-date {
+            font-size: 1.1em;
+            color: #bdc3c7;
+            margin-bottom: 15px;
+        }
+        
+        /* Стили для четвертой колонки с результатами */
+        .results-section {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .result-item {
+            margin-bottom: 15px;
+        }
+        .result-value {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+            padding: 10px;
+            border-radius: 8px;
+        }
+        .result-value.wins {
+            color: #27ae60;
+            background: rgba(39, 174, 96, 0.1);
+            border: 2px solid #27ae60;
+        }
+        .result-value.losses {
+            color: #e74c3c;
+            background: rgba(231, 76, 60, 0.1);
+            border: 2px solid #e74c3c;
+        }
+        .result-value.draws {
+            color: #f39c12;
+            background: rgba(243, 156, 18, 0.1);
+            border: 2px solid #f39c12;
+        }
+        .result-label {
+            font-size: 0.9em;
+            color: #bdc3c7;
+        }
+        
+        /* Последние бои */
+        .fights-section {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .fights-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #d4af37;
+            text-align: center;
+            border-bottom: 2px solid #d4af37;
+            padding-bottom: 10px;
+        }
+        .fight-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            border-left: 8px solid #d4af37;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 20px;
+            align-items: center;
+        }
+        .fight-card.win {
+            border-left-color: #27ae60;
+        }
+        .fight-card.loss {
+            border-left-color: #e74c3c;
+        }
+        .fight-method {
+            text-align: center;
+            width: 120px;
+            flex-shrink: 0;
+        }
+        .fight-method-text {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #ffd700;
+            margin-bottom: 5px;
+            word-wrap: break-word;
+            word-break: break-word;
+            white-space: normal;
+        }
+        .fight-round {
+            font-size: 0.9em;
+            color: #bdc3c7;
+            margin-bottom: 3px;
+        }
+        .fight-time {
+            font-size: 0.9em;
+            color: #bdc3c7;
+        }
+        .fight-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .fight-event {
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        .fight-date {
+            color: #bdc3c7;
+            font-size: 0.9em;
+        }
+        .fighters-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex: 1;
+        }
+        .fighter-photos {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        .fighter-photo-small {
+            width: 60px;
+            height: 100%;
+            min-height: 120px;
+            object-fit: cover;
+            border-radius: 5px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        .fighter-photo-placeholder {
+            width: 60px;
+            height: 100%;
+            min-height: 120px;
+            background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%);
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7em;
+            color: #bdc3c7;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        .fighter-info-small {
+            text-align: center;
+        }
+        .fighter-name-small {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+        .fighter-record {
+            color: #bdc3c7;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+        .fighter-streak {
+            color: #95a5a6;
+            font-size: 0.8em;
+        }
+        .vs-text {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #d4af37;
+        }
+        .fight-details {
+            text-align: right;
+            width: 150px;
+            flex-shrink: 0;
+        }
+        .fight-detail-item {
+            margin-bottom: 8px;
+        }
+        .fight-detail-label {
+            font-size: 0.8em;
+            color: #bdc3c7;
+            margin-bottom: 2px;
+        }
+        .fight-detail-value {
+            font-size: 0.9em;
+            color: #ffd700;
+            font-weight: bold;
+        }
+        .fight-result {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .result-text {
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-bottom: 5px;
+        }
+        .result-details {
+            color: #bdc3c7;
+            font-size: 0.9em;
+        }
+        .result-win { color: #27ae60; }
+        .result-loss { color: #e74c3c; }
+        .result-draw { color: #f39c12; }
+        
+        /* Турниры */
+        .tournaments-section {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .tournaments-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #d4af37;
+            text-align: center;
+            border-bottom: 2px solid #d4af37;
+            padding-bottom: 10px;
+        }
+        .tournament-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .tournament-date {
+            font-weight: bold;
+            color: #ffd700;
+            min-width: 80px;
+        }
+        .tournament-name {
+            color: #bdc3c7;
+            flex: 1;
+            margin-left: 15px;
+        }
+        
+        @media (max-width: 768px) {
+            .fighter-main-card {
+                grid-template-columns: 1fr;
+            }
+            .fighter-info {
+                grid-template-columns: 1fr;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .fighters-info {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            .vs-text {
+                order: -1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Шапка сайта -->
+        <div class="site-header">
+            <h1>🥊 UFC RANKER - Карточка бойца</h1>
+        </div>
+        
+        <!-- Основная карточка бойца -->
+        <div class="fighter-main-card">
+            <!-- Правый верхний угол с флагом -->
+            <div class="country-info">
+                <img src="https://flagcdn.com/w40/es.png" alt="Spain" class="country-flag" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div class="flag-placeholder" style="display: none;">🇪🇸</div>
+                <div class="country-name">Spain</div>
+                <div class="birth-place">Halle , Germany</div>
+            </div>
+            
+            <div class="fighter-photo-section">
+                <img src="Topuria.jpg" alt="Ilia Topuria" class="fighter-photo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div class="photo-placeholder" style="display: none;">Фото недоступно</div>
+                <div class="fighter-rank">Н/Д</div>
+            </div>
+            
+            <div class="fighter-info">
+                <div class="fighter-name">Ilia Topuria</div>
+                <div class="fighter-nickname">"El Matador"</div>
+                
+                <!-- Первая колонка: Возраст, весовая, стиль -->
+                <div class="info-section">
+                    <div class="age-large">28</div>
+                    <div class="birth-date">1997-01-21</div>
+                    <div class="info-label">Весовая категория</div>
+                    <div class="info-value">Легкий вес</div>
+                    <div class="info-label">Базовый стиль</div>
+                    <div class="info-value">Orthodox</div>
+                </div>
+                
+                <!-- Вторая колонка: Рост, вес, размах -->
+                <div class="info-section">
+                    <div class="info-label">Рост</div>
+                    <div class="info-value">170 см</div>
+                    <div class="info-label">Вес</div>
+                    <div class="info-value">0 кг</div>
+                    <div class="info-label">Размах рук</div>
+                    <div class="info-value">0 см</div>
+                </div>
+                
+                <!-- Третья колонка: Стойка, команда, степень -->
+                <div class="info-section">
+                    <div class="info-label">Основная стойка</div>
+                    <div class="info-value">Orthodox</div>
+                    <div class="info-label">Команда</div>
+                    <div class="info-value">Climent Club (2012–2025)</div>
+                    <div class="info-label">Степень мастерства</div>
+                    <div class="info-value">Black belt in</div>
+                </div>
+                
+                <!-- Четвертая колонка: Результаты в рамках -->
+                <div class="results-section">
+                    <div class="result-item">
+                        <div class="result-value wins">17</div>
+                        <div class="result-label">Побед</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-value losses">0</div>
+                        <div class="result-label">Поражений</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-value draws">0</div>
+                        <div class="result-label">Ничьих</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Последние бои -->
+        <div class="fights-section">
+            <div class="fights-title">🥊 Последние бои</div>
+            <div class="fight-card loss">
+                <!-- Левая часть: метод победы -->
+                <div class="fight-method">
+                    <div class="fight-method-text">KO (punches)</div>
+                    <div class="fight-round">1 раунд</div>
+                    <div class="fight-time">147</div>
+                </div>
+                
+                <!-- Центральная часть: фото и информация о бойцах -->
+                <div class="fighters-info">
+                    <div class="fighter-photos">
+                        <img src="fighter1.jpg" alt="Charles Oliveira" class="fighter-photo-small" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="fighter-photo-placeholder" style="display: none;">Фото</div>
+                        <img src="fighter2.jpg" alt="Ilia Topuria" class="fighter-photo-small" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="fighter-photo-placeholder" style="display: none;">Фото</div>
+                    </div>
+                    <div class="fighter-info-small">
+                        <div class="fighter-name-small">Charles Oliveira</div>
+                        <div class="fighter-record">N/A</div>
+                        <div class="fighter-streak">Серия: N/A</div>
+                    </div>
+                    <div class="fighter-info-small">
+                        <div class="fighter-name-small">Ilia Topuria</div>
+                        <div class="fighter-record">N/A</div>
+                        <div class="fighter-streak">Серия: N/A</div>
+                    </div>
+                </div>
+                
+                <!-- Правая часть: дата, событие, судья -->
+                <div class="fight-details">
+                    <div class="fight-detail-item">
+                        <div class="fight-detail-label">Дата боя</div>
+                        <div class="fight-detail-value">2025-06-28</div>
+                    </div>
+                    <div class="fight-detail-item">
+                        <div class="fight-detail-label">Событие</div>
+                        <div class="fight-detail-value">UFC 317: Topuria vs. Oliveira</div>
+                    </div>
+                    <div class="fight-detail-item">
+                        <div class="fight-detail-label">Судья</div>
+                        <div class="fight-detail-value">N/A</div>
+                    </div>
+                </div>
+            </div>
+            <div class="fight-card loss">
+                <!-- Левая часть: метод победы -->
+                <div class="fight-method">
+                    <div class="fight-method-text">KO (punches)</div>
+                    <div class="fight-round">3 раунд</div>
+                    <div class="fight-time">94</div>
+                </div>
+                
+                <!-- Центральная часть: фото и информация о бойцах -->
+                <div class="fighters-info">
+                    <div class="fighter-photos">
+                        <img src="fighter1.jpg" alt="Max Holloway" class="fighter-photo-small" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="fighter-photo-placeholder" style="display: none;">Фото</div>
+                        <img src="fighter2.jpg" alt="Ilia Topuria" class="fighter-photo-small" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="fighter-photo-placeholder" style="display: none;">Фото</div>
+                    </div>
+                    <div class="fighter-info-small">
+                        <div class="fighter-name-small">Max Holloway</div>
+                        <div class="fighter-record">N/A</div>
+                        <div class="fighter-streak">Серия: N/A</div>
+                    </div>
+                    <div class="fighter-info-small">
+                        <div class="fighter-name-small">Ilia Topuria</div>
+                        <div class="fighter-record">N/A</div>
+                        <div class="fighter-streak">Серия: N/A</div>
+                    </div>
+                </div>
+                
+                <!-- Правая часть: дата, событие, судья -->
+                <div class="fight-details">
+                    <div class="fight-detail-item">
+                        <div class="fight-detail-label">Дата боя</div>
+                        <div class="fight-detail-value">2024-10-26</div>
+                    </div>
+                    <div class="fight-detail-item">
+                        <div class="fight-detail-label">Событие</div>
+                        <div class="fight-detail-value">UFC 308: Topuria vs. Holloway</div>
+                    </div>
+                    <div class="fight-detail-item">
+                        <div class="fight-detail-label">Судья</div>
+                        <div class="fight-detail-value">N/A</div>
+                    </div>
+                </div>
+            </div>
+            <div class="fight-card win">
+                <!-- Левая часть: метод победы -->
+                <div class="fight-method">
+                    <div class="fight-method-text">KO (punch)</div>
+                    <div class="fight-round">2 раунд</div>
+                    <div class="fight-time">212</div>
+                </div>
+                
+                <!-- Центральная часть: фото и информация о бойцах -->
+                <div class="fighters-info">
+                    <div class="fighter-photos">
+                        <img src="fighter1.jpg" alt="Ilia Topuria" class="fighter-photo-small" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="fighter-photo-placeholder" style="display: none;">Фото</div>
+                        <img src="fighter2.jpg" alt="Alexander Volkanovski" class="fighter-photo-small" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="fighter-photo-placeholder" style="display: none;">Фото</div>
+                    </div>
+                    <div class="fighter-info-small">
+                        <div class="fighter-name-small">Ilia Topuria</div>
+                        <div class="fighter-record">N/A</div>
+                        <div class="fighter-streak">Серия: N/A</div>
+                    </div>
+                    <div class="fighter-info-small">
+                        <div class="fighter-name-small">Alexander Volkanovski</div>
+                        <div class="fighter-record">N/A</div>
+                        <div class="fighter-streak">Серия: N/A</div>
+                    </div>
+                </div>
+                
+                <!-- Правая часть: дата, событие, судья -->
+                <div class="fight-details">
+                    <div class="fight-detail-item">
+                        <div class="fight-detail-label">Дата боя</div>
+                        <div class="fight-detail-value">2024-02-17</div>
+                    </div>
+                    <div class="fight-detail-item">
+                        <div class="fight-detail-label">Событие</div>
+                        <div class="fight-detail-value">UFC 298: Volkanovski vs. Topuria</div>
+                    </div>
+                    <div class="fight-detail-item">
+                        <div class="fight-detail-label">Судья</div>
+                        <div class="fight-detail-value">N/A</div>
+                    </div>
+                </div>
+            </div>
+            <div class="fight-card win">
+                <!-- Левая часть: метод победы -->
+                <div class="fight-method">
+                    <div class="fight-method-text">Decision (unanimous)</div>
+                    <div class="fight-round">5 раунд</div>
+                    <div class="fight-time">300</div>
+                </div>
+                
+                <!-- Центральная часть: фото и информация о бойцах -->
+                <div class="fighters-info">
+                    <div class="fighter-photos">
+                        <img src="fighter1.jpg" alt="Ilia Topuria" class="fighter-photo-small" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="fighter-photo-placeholder" style="display: none;">Фото</div>
+                        <img src="fighter2.jpg" alt="Josh Emmett" class="fighter-photo-small" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="fighter-photo-placeholder" style="display: none;">Фото</div>
+                    </div>
+                    <div class="fighter-info-small">
+                        <div class="fighter-name-small">Ilia Topuria</div>
+                        <div class="fighter-record">N/A</div>
+                        <div class="fighter-streak">Серия: N/A</div>
+                    </div>
+                    <div class="fighter-info-small">
+                        <div class="fighter-name-small">Josh Emmett</div>
+                        <div class="fighter-record">N/A</div>
+                        <div class="fighter-streak">Серия: N/A</div>
+                    </div>
+                </div>
+                
+                <!-- Правая часть: дата, событие, судья -->
+                <div class="fight-details">
+                    <div class="fight-detail-item">
+                        <div class="fight-detail-label">Дата боя</div>
+                        <div class="fight-detail-value">2023-06-24</div>
+                    </div>
+                    <div class="fight-detail-item">
+                        <div class="fight-detail-label">Событие</div>
+                        <div class="fight-detail-value">UFC on ABC: Emmett vs. Topuria</div>
+                    </div>
+                    <div class="fight-detail-item">
+                        <div class="fight-detail-label">Судья</div>
+                        <div class="fight-detail-value">N/A</div>
+                    </div>
+                </div>
+            </div>
+            <div class="fight-card win">
+                <!-- Левая часть: метод победы -->
+                <div class="fight-method">
+                    <div class="fight-method-text">Submission (arm-triangle choke)</div>
+                    <div class="fight-round">2 раунд</div>
+                    <div class="fight-time">190</div>
+                </div>
+                
+                <!-- Центральная часть: фото и информация о бойцах -->
+                <div class="fighters-info">
+                    <div class="fighter-photos">
+                        <img src="fighter1.jpg" alt="Ilia Topuria" class="fighter-photo-small" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="fighter-photo-placeholder" style="display: none;">Фото</div>
+                        <img src="fighter2.jpg" alt="Bryce Mitchell" class="fighter-photo-small" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="fighter-photo-placeholder" style="display: none;">Фото</div>
+                    </div>
+                    <div class="fighter-info-small">
+                        <div class="fighter-name-small">Ilia Topuria</div>
+                        <div class="fighter-record">N/A</div>
+                        <div class="fighter-streak">Серия: N/A</div>
+                    </div>
+                    <div class="fighter-info-small">
+                        <div class="fighter-name-small">Bryce Mitchell</div>
+                        <div class="fighter-record">N/A</div>
+                        <div class="fighter-streak">Серия: N/A</div>
+                    </div>
+                </div>
+                
+                <!-- Правая часть: дата, событие, судья -->
+                <div class="fight-details">
+                    <div class="fight-detail-item">
+                        <div class="fight-detail-label">Дата боя</div>
+                        <div class="fight-detail-value">2022-12-10</div>
+                    </div>
+                    <div class="fight-detail-item">
+                        <div class="fight-detail-label">Событие</div>
+                        <div class="fight-detail-value">UFC 282: Błachowicz vs. Ankalaev</div>
+                    </div>
+                    <div class="fight-detail-item">
+                        <div class="fight-detail-label">Судья</div>
+                        <div class="fight-detail-value">N/A</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Турниры -->
+        <div class="tournaments-section">
+            <div class="tournaments-title">📅 Предстоящие турниры</div>
+        </div>
+    </div>
+</body>
+</html>

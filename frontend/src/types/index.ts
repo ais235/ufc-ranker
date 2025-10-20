@@ -30,7 +30,9 @@ export interface WeightClass {
 }
 
 export interface Ranking {
+  id: number
   fighter: Fighter
+  weight_class: string
   rank_position?: number
   is_champion: boolean
   rank_change: number
@@ -88,24 +90,52 @@ export interface Comparison {
 export interface Event {
   id: number
   name: string
-  date?: string
+  event_number?: string
+  event_type?: string
+  event_date?: string
   location?: string
   venue?: string
+  venue_url?: string
+  location_url?: string
+  event_url?: string
+  reference_url?: string
+  status?: string
   attendance?: number
+  gate_revenue?: string
   image_url?: string
+  description?: string
+  is_upcoming?: boolean
 }
 
 export interface Fight {
   id: number
-  event: Event
-  fighter1: Fighter
-  fighter2: Fighter
-  weight_class: WeightClass
+  event_name?: string
+  fighter1_name?: string
+  fighter2_name?: string
+  weight_class?: string
   scheduled_rounds: number
-  result?: string
+  method?: string
+  method_details?: string
+  round?: number
+  time?: string
   fight_date?: string
+  location?: string
+  notes?: string
   is_title_fight: boolean
   is_main_event: boolean
+  is_win?: string
+  is_loss?: string
+  is_draw?: string
+  is_nc?: string
+  fighter1_record?: string
+  fighter2_record?: string
+  fighter1_country?: string
+  fighter2_country?: string
+  card_type?: string
+  referee?: string
+  winner_name?: string
+  judges_score?: string
+  fight_order?: number
 }
 
 export interface FightStats {
